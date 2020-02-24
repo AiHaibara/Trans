@@ -333,19 +333,11 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/Kodak.Cloud.AdminPortal.Client/dist
-/Kodak.Cloud.AdminPortal.Client/public/libs/kodakElement
-/Kodak.Cloud.AdminPortal.Client/package-lock.json
 
 # local env
 *.env.local
 alan.env.local
 dev.env.local
 .env.local
-/Kodak.Cloud.AdminPortal.Client/devalan
-/Kodak.Cloud.AdminPortal.Client/*.local
 /out.txt
 /sql.txt
-/Kodak.Cloud.AdminPortal.Client/src/components/dialogs/roles/CreateOrEditRoleDialog copy.vue
-/Kodak.Cloud.AdminPortal.Client/dev
-/Kodak.Cloud.AdminPortal.Client/alan
