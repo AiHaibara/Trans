@@ -1,0 +1,40 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ import namespace="System.Collections.Generic"#>
+<#@ output extension=".cs" #>
+<# 
+var messageList = new List<string>
+{
+	"LoadShowContent",
+	"FullSwitch",
+	"ContributorsView",
+	"ClearLeftSelected",
+	"SendChatMessage",
+	"GrowlDemoPanel",
+	"DialogDemoWindow",
+	"MainWindow",
+	"PracticalDemo",
+	"ProjectsView",
+	"BlogsView",
+	"WebsitesView",
+	"NotifyIconDemo",
+	"NotifyIconContextDemo",
+	"CommonWindow",
+	"BlurWindow",
+	"CustomNonClientAreaWindow",
+	"NoNonClientAreaDragableWindow",
+	"QQGroupView",
+	"GlowWindow",
+	"NativeCommonWindow",
+	"NavigationWindow"
+};
+#>
+namespace Trans.Client.Data
+{
+	public class MessageToken
+    {
+	<#foreach(var item in messageList){#>
+    public static readonly string <#=item#> = nameof(<#=item#>);
+
+    <#}#>
+}
+}
