@@ -5,6 +5,9 @@ using System.Text;
 using HandyControl.Controls;
 using Trans.Client.Windows;
 using Trans.Client.Helper;
+using HandyControl.Tools;
+using HandyControl.Data;
+using System.Windows.Input;
 #if netle40
 using GalaSoft.MvvmLight.Command;
 #else
@@ -36,6 +39,74 @@ namespace Trans.Client.ViewModel
     }
     public class MainViewModel: DemoViewModelBase<DemoDataModel>
     {
+        private string _keyText = "Control + E";
+        public string KeyText
+        {
+            get
+            {
+                return _keyText;
+            }
+            set {
+                _keyText=ModifierKeys != ModifierKeys.None ? $"{ModifierKeys.ToString()} + {Key.ToString()}" : Key.ToString();
+                Set(ref _keyText, value); 
+            }
+        }
+
+        private Key _key = Key.E;
+        public Key Key
+        {
+            get => _key;
+#if netle40
+            set => Set(nameof(Key), ref _key, value);
+#else 
+            set => Set(ref _key, value);
+#endif
+        }
+
+        private ModifierKeys _modifierKeys = ModifierKeys.Control;
+        public ModifierKeys ModifierKeys
+        {
+            get => _modifierKeys;
+#if netle40
+            set => Set(nameof(ModifierKeys), ref _modifierKeys, value);
+#else 
+            set => Set(ref _modifierKeys, value);
+#endif
+        }
+
+        public string _to;
+        public string To
+        {
+            get => _to;
+            set { 
+                Set(ref _to, value);
+                BaiduHelper.Translator.to = To;
+                GlobalData.Config.TransConfig.To = To;
+                GlobalData.Save();
+            }
+        }
+
+        public MainViewModel()
+        {
+            DataList = new List<DemoDataModel>()
+            {
+                new DemoDataModel()
+                {
+                    From="en",
+                    To="zh",
+                    FromFull="English",
+                    ToFull="简体中文"
+                },
+                new DemoDataModel()
+                {
+                    From="zh",
+                    To="en",
+                    FromFull="简体中文",
+                    ToFull="English"
+                }
+            };
+            To = GlobalData.Config.TransConfig.To;
+        }
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
           new RelayCommand(() => Growl.Warning("Global Shortcut Warning"))).Value;
 
@@ -50,6 +121,5 @@ namespace Trans.Client.ViewModel
             var dest = BaiduHelper.Translator.generalBasic(src);
             Growl.InfoGlobal(dest);
         }
-       
     }
 }

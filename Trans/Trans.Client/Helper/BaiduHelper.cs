@@ -126,6 +126,7 @@ namespace Trans.Client.Helper
             private static String clientId = "百度云应用的AK";
             // 百度云中开通对应服务应用的 Secret Key
             private static String clientSecret = "百度云应用的SK";
+            public static string to { get; set; }
             public static string generalBasic(string src)
             {
                 // 原文
@@ -133,7 +134,7 @@ namespace Trans.Client.Helper
                 // 源语言
                 string from = "en";
                 // 目标语言
-                string to = "zh";
+                string to = Translator.to;
                 // 改成您的APP ID
                 string appId = clientId;
                 Random rd = new Random();

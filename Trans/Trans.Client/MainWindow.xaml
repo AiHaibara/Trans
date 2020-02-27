@@ -16,13 +16,26 @@
         Title="MainWindow" Height="450" Width="800">
     <hc:GlobalShortcut.KeyBindings>
         <KeyBinding Modifiers="Control" Key="I" Command="{Binding Main.GlobalShortcutInfoCmd, Source={StaticResource Locator}}"/>
-        <KeyBinding Modifiers="Control" Key="E" Command="{Binding Main.GlobalShortcutWarningCmd, Source={StaticResource Locator}}"/>
+        <KeyBinding Modifiers="{Binding ModifierKeys,Mode=TwoWay}" Key="{Binding Key,Mode=TwoWay}" x:Name="Hot" Command="{Binding Main.GlobalShortcutWarningCmd, Source={StaticResource Locator}}"/>
     </hc:GlobalShortcut.KeyBindings>
    <!--<hc:Window.NonClientAreaContent>
         <userControl:NoUserContent/>
     </hc:Window.NonClientAreaContent>-->
     <Grid Name="DisplayArea">
-
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">
+                <Label HorizontalAlignment="Center" MinWidth="60">To:</Label>
+                <hc:ComboBox MinWidth="100" ItemsSource="{Binding DataList}" DisplayMemberPath="ToFull"
+                    SelectedValuePath="To"
+                    SelectedValue="{Binding Path=To}">
+                </hc:ComboBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">
+                <TextBox Width="0"></TextBox>
+                <Label HorizontalAlignment="Center" MinWidth="60">Key:</Label>
+                <TextBox HorizontalAlignment="Center" Height="30" MinWidth="100" Text="{Binding KeyText, Mode=TwoWay}" KeyDown="TextBox_KeyDown"></TextBox>
+            </StackPanel>
+        </StackPanel>
         <!--<Image Name='imageCapture' Stretch='UniformToFill'/>-->
 
         <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right">
