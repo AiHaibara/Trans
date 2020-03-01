@@ -80,14 +80,15 @@ namespace Trans.Client.ViewModel
             get => _to;
             set { 
                 Set(ref _to, value);
-                BaiduHelper.Translator.to = To;
+                Trans.GetTranslator().setTo(To);
                 GlobalData.Config.TransConfig.To = To;
                 GlobalData.Save();
             }
         }
-
-        public MainViewModel()
+        public ITrans Trans { get; set; }
+        public MainViewModel(ITrans trans)
         {
+            Trans = trans;
             DataList = new List<DemoDataModel>()
             {
                 new DemoDataModel()
@@ -117,8 +118,8 @@ namespace Trans.Client.ViewModel
         {
             //MainWindow.Cursor = Cliper.Instance;
             CropWindow.ShowDialog();
-            var src = BaiduHelper.Ocror.generalBasic();
-            var dest = BaiduHelper.Translator.generalBasic(src);
+            var src = Trans.GetOcror().CropImage();
+            var dest = Trans.GetTranslator().Translate(src);
             Growl.InfoGlobal(dest);
         }
     }

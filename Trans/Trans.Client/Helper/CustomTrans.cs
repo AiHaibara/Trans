@@ -12,8 +12,24 @@ using Trans.Client.Data;
 
 namespace Trans.Client.Helper
 {
-    public class BaiduHelper
+    public class CustomTrans : ITrans
     {
+        public ITranslator translator { get; set; }
+        public IOcror ocror { get; set; }
+        public CustomTrans(IOcror ocror, ITranslator translator)
+        {
+            this.ocror = ocror;
+            this.translator = translator;
+        }
+        public IOcror GetOcror()
+        {
+            return ocror;
+        }
+        public ITranslator GetTranslator()
+        {
+            return translator;
+        }
+
         public static class AccessToken
         {
             static AccessToken()
@@ -59,10 +75,14 @@ namespace Trans.Client.Helper
             public string words { get; set; }
         }
 
-        public class Ocror
+        public class Ocror:IOcror
         {
+            static Ocror()
+            {
+                AccessToken.getAccessToken();
+            }
             // 通用文字识别
-            public static string generalBasic()
+            public string CropImage()
             {
                 string token = AccessToken.TOKEN;
                 string host = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + token;
@@ -111,7 +131,7 @@ namespace Trans.Client.Helper
             public string dst { get; set; }
         }
 
-        public class Translator
+        public class Translator:ITranslator
         {
             static Translator()
             {
@@ -126,15 +146,15 @@ namespace Trans.Client.Helper
             private static String clientId = "百度云应用的AK";
             // 百度云中开通对应服务应用的 Secret Key
             private static String clientSecret = "百度云应用的SK";
-            public static string to { get; set; }
-            public static string generalBasic(string src)
+            public string to { get; set; }
+            public string Translate(string src)
             {
                 // 原文
                 string q = src;
                 // 源语言
                 string from = "en";
                 // 目标语言
-                string to = Translator.to;
+                string to = this.to;
                 // 改成您的APP ID
                 string appId = clientId;
                 Random rd = new Random();
@@ -142,13 +162,9 @@ namespace Trans.Client.Helper
                 // 改成您的密钥
                 string secretKey = clientSecret;
                 string sign = EncryptString(appId + q + salt + secretKey);
-                string url = "http://api.fanyi.baidu.com/api/trans/vip/translate?";
-                url += "q=" + HttpUtility.UrlEncode(q);
-                url += "&from=" + from;
-                url += "&to=" + to;
-                url += "&appid=" + appId;
-                url += "&salt=" + salt;
-                url += "&sign=" + sign;
+                string url = "http://127.0.0.1:5000/trans?";
+                url += "input=" + HttpUtility.UrlEncode(q);
+                Console.WriteLine(url);
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
                 //request.ContentType = "text/html;charset=UTF-8";
                 //request.UserAgent = null;
@@ -166,10 +182,11 @@ namespace Trans.Client.Helper
                 HttpClient client = new HttpClient(handler);
                 HttpResponseMessage response = client.SendAsync(request).Result;
                 var result = response.Content.ReadAsStringAsync().Result;
-                var data=JsonSerializer.Deserialize<TransData>(result);
-                if (data == null||data.trans_result==null)
-                    return "None";
-                return string.Join(';', data.trans_result?.Select(p => p.dst));
+                return result;
+                //var data=JsonSerializer.Deserialize<TransData>(result);
+                //if (data == null||data.trans_result==null)
+                //    return "None";
+                //return string.Join(';', data.trans_result?.Select(p => p.dst));
             }
             // 计算MD5值
             public static string EncryptString(string str)
@@ -188,6 +205,11 @@ namespace Trans.Client.Helper
                 }
                 // 返回加密的字符串
                 return sb.ToString();
+            }
+
+            public void setTo(string to)
+            {
+                this.to = to;
             }
         }
     }

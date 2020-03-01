@@ -30,7 +30,6 @@ namespace Trans.Client
     /// </summary>
     public partial class MainWindow : System.Windows.Window
     {
-
         public MainWindow()
         {
             GlobalData.Init();
@@ -44,7 +43,7 @@ namespace Trans.Client
                 {
                     Hot.Key = (Key)Key.Parse(typeof(Key), text);
                     var keyStr = Hot.Modifiers != ModifierKeys.None ? $"{Hot.Modifiers.ToString()} + {Hot.Key.ToString()}" : Hot.Key.ToString();
-                    (DataContext as MainViewModel).KeyText = keyStr;
+                    (DataContext as MainViewModel).KeyText = keyStr;                       
                     GlobalShortcut.Init(this);
                 }
                 else
@@ -57,7 +56,6 @@ namespace Trans.Client
                 }
             }
 
-            var token =BaiduHelper.AccessToken.getAccessToken();
         }
 
         public static MainWindow Instance { get; set; }
