@@ -2,6 +2,8 @@
 
 Please register and apply your own key.
 
+![DemoGif](https://raw.githubusercontent.com/AiHaibara/Trans/master/demo.gif)
+
 # Roadmap
 
 Now only support Baidu Api. or use your own train model web, may be more third api will be added in the future.
