@@ -9,7 +9,8 @@ namespace Trans.Client.Models
     public class TransConfig
     {
         //public string From { get; set; } = "en";
-        public string To { get; set; } = "zh";
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public LangType To { get; set; } = LangType.en;
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public TransStrategy Use { get; set; } = TransStrategy.Baidu;
         public string HotKey { get; set; }

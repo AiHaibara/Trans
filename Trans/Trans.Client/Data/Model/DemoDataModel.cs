@@ -17,10 +17,10 @@ namespace Trans.Client.Data
 
         public string ImgPath { get; set; }
 
-        public string FromFull { get; set; }
-        public string ToFull { get; set; }
-        public string From { get; set; }
-        public string To { get; set; }
+        public string from { get; set; }
+        public string to { get; set; }
+        public string fromfull { get; set; }
+        public string tofull { get; set; }
 
         public List<DemoDataModel> DataList { get; set; }
     }

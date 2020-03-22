@@ -109,9 +109,9 @@ namespace Trans.Client.Helper
                 Console.WriteLine("通用文字识别:");
                 Console.WriteLine(result);
                 var data = JsonSerializer.Deserialize<MyResult>(result);
-                data.language = GlobalData.Config.Langs?.FirstOrDefault(p => p.name == "Custom" && p.from == data.language)?.to;
+                data.language = GlobalData.Config.Langs?.FirstOrDefault(p => p.name == TransStrategy.Custom.ToString() && p.ocr == data.language)?.trans;
                 if (string.IsNullOrWhiteSpace(data.language))
-                    data.language = "en";
+                    data.language = LangType.en.ToString();
                 return data;
                 //if (data == null|| data.words_result==null)
                 //    return "None";

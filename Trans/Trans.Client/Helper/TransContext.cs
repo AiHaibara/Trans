@@ -4,6 +4,14 @@ using System.Text;
 
 namespace Trans.Client.Helper
 {
+    public enum LangType
+    {
+        en,
+        zh,
+        jp,
+        zh_tw,
+    }
+
     public enum TransStrategy
     {
         Baidu,

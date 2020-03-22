@@ -26,9 +26,8 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">
                 <Label HorizontalAlignment="Center" MinWidth="60">To:</Label>
-                <hc:ComboBox MinWidth="100" ItemsSource="{Binding DataList}" DisplayMemberPath="ToFull"
-                    SelectedValuePath="To"
-                    SelectedValue="{Binding Path=To}">
+                <hc:ComboBox MinWidth="100" ItemsSource="{Binding DataList}"
+                    SelectedItem="{Binding Path=To}">
                 </hc:ComboBox>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">

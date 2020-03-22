@@ -86,7 +86,7 @@ namespace Trans.Client.Helper
             public MyResult CropImage()
             {
                 string token = AccessToken.TOKEN;
-                string host = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + token;
+                string host = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + token + "&detect_language=true";
                 Encoding encoding = Encoding.Default;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host);
                 request.Method = "post";
@@ -104,8 +104,8 @@ namespace Trans.Client.Helper
                 Console.WriteLine(result);
                 var data = JsonSerializer.Deserialize<BaiduOcrResult>(result);
                 if (data == null|| data.words_result==null)
-                    return new MyResult { text = "None", language = "en" };
-                return new MyResult { text = string.Join(';', data.words_result?.Select(p => p.words)),language="en" };
+                    return new MyResult { text = "None", language = "auto" };
+                return new MyResult { text = string.Join(';', data.words_result?.Select(p => p.words)),language= "auto" };
             }
 
             public static String getFileBase64(String fileName)

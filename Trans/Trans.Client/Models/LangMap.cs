@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
+using Trans.Client.Helper;
 
 namespace Trans.Client.Models
 {
@@ -12,8 +14,10 @@ namespace Trans.Client.Models
     //}
     public class LangData
     {
-        public string from { get; set; }
-        public string to { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public LangType type { get; set; }
+        public string ocr { get; set; }
+        public string trans { get; set; }
         public string name { get; set; }
         //public List<LangData> Langs { get; set; }
     }

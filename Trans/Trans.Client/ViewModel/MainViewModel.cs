@@ -25,12 +25,12 @@ namespace Trans.Client.ViewModel
         /// <summary>
         ///     数据列表
         /// </summary>
-        private IList<T> _dataList;
+        private IEnumerable<LangType> _dataList = Enum.GetValues(typeof(LangType)).Cast<LangType>();
 
         /// <summary>
         ///     数据列表
         /// </summary>
-        public IList<T> DataList
+        public IEnumerable<LangType> DataList
         {
             get => _dataList;
 #if netle40
@@ -47,7 +47,7 @@ namespace Trans.Client.ViewModel
             get => _useList;
 #if netle40
             set => Set(nameof(UseList), ref _useList, value);
-#else
+#else   
             set => Set(ref _useList, value);
 #endif       
         }
@@ -89,13 +89,16 @@ namespace Trans.Client.ViewModel
 #endif
         }
 
-        public string _to;
-        public string To
+        public LangType _to;
+        public LangType To
         {
             get => _to;
             set { 
                 Set(ref _to, value);
-                TransContext.GetTrans().GetTranslator().setTo(To);
+                var strategyTo = GlobalData.Config.Langs?.FirstOrDefault(p => p.name == TransContext.Strategy.ToString() && p.type == To)?.trans;
+                if (string.IsNullOrWhiteSpace(strategyTo))
+                    strategyTo = LangType.en.ToString();
+                TransContext.GetTrans().GetTranslator().setTo(strategyTo);
                 GlobalData.Config.TransConfig.To = To;
                 GlobalData.Save();
             }
@@ -111,7 +114,10 @@ namespace Trans.Client.ViewModel
                 //Trans.GetTranslator().setTo(To);
                 TransContext.Strategy = Use;
                 GlobalData.Config.TransConfig.Use = Use;
-                TransContext.GetTrans().GetTranslator().setTo(To);
+                var strategyTo=GlobalData.Config.Langs?.FirstOrDefault(p => p.name == TransContext.Strategy.ToString() && p.type == To)?.trans;
+                if (string.IsNullOrWhiteSpace(strategyTo))
+                    strategyTo = LangType.en.ToString();
+                TransContext.GetTrans().GetTranslator().setTo(strategyTo);
                 GlobalData.Save();
             }
         }
@@ -119,25 +125,8 @@ namespace Trans.Client.ViewModel
         public MainViewModel(ITransContext transContext)
         {
             TransContext = transContext;
-            DataList = new List<DemoDataModel>()
-            {
-                new DemoDataModel()
-                {
-                    From="en",
-                    To="zh",
-                    FromFull="English",
-                    ToFull="简体中文"
-                },
-                new DemoDataModel()
-                {
-                    From="zh",
-                    To="en",
-                    FromFull="简体中文",
-                    ToFull="English"
-                }
-            };
-            Use = GlobalData.Config.TransConfig.Use;
             To = GlobalData.Config.TransConfig.To;
+            Use = GlobalData.Config.TransConfig.Use;
         }
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
           new RelayCommand(() => Environment.Exit(0))).Value;
