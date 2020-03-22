@@ -1,6 +1,7 @@
 # Trans
 
 Please register and apply your own key.
+### Default HotKey is Alt+A
 
 ![DemoGif](https://raw.githubusercontent.com/AiHaibara/Trans/master/demo.gif)
 
