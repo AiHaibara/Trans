@@ -6,6 +6,7 @@ namespace Trans.Client.Helper
 {
     public interface ITrans
     {
+        public TransStrategy Strategy { get; }
         public IOcror GetOcror();
         public ITranslator GetTranslator();
     }

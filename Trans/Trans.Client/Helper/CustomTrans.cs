@@ -12,14 +12,20 @@ using Trans.Client.Data;
 
 namespace Trans.Client.Helper
 {
+    public class MyResult
+    {
+        public string language { get; set; }
+        public string text { get; set; }
+    }
     public class CustomTrans : ITrans
     {
         public ITranslator translator { get; set; }
         public IOcror ocror { get; set; }
-        public CustomTrans(IOcror ocror, ITranslator translator)
+        public TransStrategy Strategy => TransStrategy.Custom;
+        public CustomTrans()
         {
-            this.ocror = ocror;
-            this.translator = translator;
+            this.ocror = new Ocror();
+            this.translator = new Translator();
         }
         public IOcror GetOcror()
         {
@@ -28,7 +34,7 @@ namespace Trans.Client.Helper
         public ITranslator GetTranslator()
         {
             return translator;
-        }
+        }                                                              
 
         public static class AccessToken
         {
@@ -82,17 +88,18 @@ namespace Trans.Client.Helper
                 AccessToken.getAccessToken();
             }
             // 通用文字识别
-            public string CropImage()
+            public MyResult CropImage()
             {
                 string token = AccessToken.TOKEN;
-                string host = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + token;
+                string host = "http://127.0.0.1:5000/ocr";
                 Encoding encoding = Encoding.Default;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host);
                 request.Method = "post";
                 request.KeepAlive = true;
                 // 图片的base64编码
                 string base64 = getFileBase64("source.jpg");
-                String str = "image=" + HttpUtility.UrlEncode(base64);
+                //String str = HttpUtility.UrlEncode(base64);
+                String str = base64;
                 byte[] buffer = encoding.GetBytes(str);
                 request.ContentLength = buffer.Length;
                 request.GetRequestStream().Write(buffer, 0, buffer.Length);
@@ -101,10 +108,14 @@ namespace Trans.Client.Helper
                 string result = reader.ReadToEnd();
                 Console.WriteLine("通用文字识别:");
                 Console.WriteLine(result);
-                var data = JsonSerializer.Deserialize<BaiduOcrResult>(result);
-                if (data == null|| data.words_result==null)
-                    return "None";
-                return string.Join(';', data.words_result?.Select(p => p.words));
+                var data = JsonSerializer.Deserialize<MyResult>(result);
+                data.language = GlobalData.Config.Langs?.FirstOrDefault(p => p.name == "Custom" && p.from == data.language)?.to;
+                if (string.IsNullOrWhiteSpace(data.language))
+                    data.language = "en";
+                return data;
+                //if (data == null|| data.words_result==null)
+                //    return "None";
+                //return string.Join(';', data.words_result?.Select(p => p.words));
             }
 
             public static String getFileBase64(String fileName)
@@ -147,12 +158,12 @@ namespace Trans.Client.Helper
             // 百度云中开通对应服务应用的 Secret Key
             private static String clientSecret = "百度云应用的SK";
             public string to { get; set; }
-            public string Translate(string src)
+            public string Translate(MyResult src)
             {
                 // 原文
-                string q = src;
+                string q = src.text;
                 // 源语言
-                string from = "en";
+                string from = src.language;
                 // 目标语言
                 string to = this.to;
                 // 改成您的APP ID

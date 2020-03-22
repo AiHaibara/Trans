@@ -341,3 +341,5 @@ dev.env.local
 .env.local
 /out.txt
 /sql.txt
+/transweb/t2t/data
+/transweb/t2t/train

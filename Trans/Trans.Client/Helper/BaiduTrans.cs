@@ -16,10 +16,12 @@ namespace Trans.Client.Helper
     {
         public ITranslator translator { get; set; }
         public IOcror ocror { get; set; }
-        public BaiduTrans(IOcror ocror,ITranslator translator)
+        public TransStrategy Strategy => TransStrategy.Baidu;
+
+        public BaiduTrans()
         {
-            this.ocror = ocror;
-            this.translator = translator;
+            this.ocror = new Ocror();
+            this.translator = new Translator();
         }
         public IOcror GetOcror()
         {
@@ -81,7 +83,7 @@ namespace Trans.Client.Helper
                 AccessToken.getAccessToken();
             }
             // 通用文字识别
-            public string CropImage()
+            public MyResult CropImage()
             {
                 string token = AccessToken.TOKEN;
                 string host = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic?access_token=" + token;
@@ -102,8 +104,8 @@ namespace Trans.Client.Helper
                 Console.WriteLine(result);
                 var data = JsonSerializer.Deserialize<BaiduOcrResult>(result);
                 if (data == null|| data.words_result==null)
-                    return "None";
-                return string.Join(';', data.words_result?.Select(p => p.words));
+                    return new MyResult { text = "None", language = "en" };
+                return new MyResult { text = string.Join(';', data.words_result?.Select(p => p.words)),language="en" };
             }
 
             public static String getFileBase64(String fileName)
@@ -146,12 +148,12 @@ namespace Trans.Client.Helper
             // 百度云中开通对应服务应用的 Secret Key
             private static String clientSecret = "百度云应用的SK";
             public string to { get; set; }
-            public string Translate(string src)
+            public string Translate(MyResult src)
             {
                 // 原文
-                string q = src;
+                string q = src.text;
                 // 源语言
-                string from = "en";
+                string from = src.language;
                 // 目标语言
                 string to = this.to;
                 // 改成您的APP ID

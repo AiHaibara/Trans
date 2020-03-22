@@ -13,9 +13,10 @@
         DataContext="{Binding Main,Source={StaticResource Locator}}"
         hc:GlobalShortcut.Host="True"
         hc:Dialog.Token="{x:Static data:MessageToken.MainWindow}"
-        Title="MainWindow" Height="450" Width="800">
-    <hc:GlobalShortcut.KeyBindings>
-        <KeyBinding Modifiers="Control" Key="I" Command="{Binding Main.GlobalShortcutInfoCmd, Source={StaticResource Locator}}"/>
+        Title="Trans Tips Alt+Esc exit" Height="450" Width="800"
+        Icon="/Trans.Client;component/Resources/Img/icon.ico">
+    <hc:GlobalShortcut.KeyBindings>                                                                                                                                                                                                                    
+        <KeyBinding Modifiers="Alt" Key="Esc" Command="{Binding Main.GlobalShortcutInfoCmd, Source={StaticResource Locator}}"/>
         <KeyBinding Modifiers="{Binding ModifierKeys,Mode=TwoWay}" Key="{Binding Key,Mode=TwoWay}" x:Name="Hot" Command="{Binding Main.GlobalShortcutWarningCmd, Source={StaticResource Locator}}"/>
     </hc:GlobalShortcut.KeyBindings>
    <!--<hc:Window.NonClientAreaContent>
@@ -34,6 +35,12 @@
                 <TextBox Width="0"></TextBox>
                 <Label HorizontalAlignment="Center" MinWidth="60">Key:</Label>
                 <TextBox HorizontalAlignment="Center" Height="30" MinWidth="100" Text="{Binding KeyText, Mode=TwoWay}" KeyDown="TextBox_KeyDown"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">
+                <Label HorizontalAlignment="Center" MinWidth="60">Use:</Label>
+                <hc:ComboBox MinWidth="100" ItemsSource="{Binding UseList}"
+                    SelectedItem="{Binding Path=Use}">
+                </hc:ComboBox>
             </StackPanel>
         </StackPanel>
         <!--<Image Name='imageCapture' Stretch='UniformToFill'/>-->

@@ -8,6 +8,9 @@ using Trans.Client.Helper;
 using HandyControl.Tools;
 using HandyControl.Data;
 using System.Windows.Input;
+using Trans.Client.Models;
+using System.Windows;
+using System.Linq;
 #if netle40
 using GalaSoft.MvvmLight.Command;
 #else
@@ -34,6 +37,18 @@ namespace Trans.Client.ViewModel
             set => Set(nameof(DataList), ref _dataList, value);
 #else
             set => Set(ref _dataList, value);
+#endif       
+        }
+
+        private IEnumerable<TransStrategy> _useList = Enum.GetValues(typeof(TransStrategy)).Cast<TransStrategy>();
+
+        public IEnumerable<TransStrategy> UseList
+        {
+            get => _useList;
+#if netle40
+            set => Set(nameof(UseList), ref _useList, value);
+#else
+            set => Set(ref _useList, value);
 #endif       
         }
     }
@@ -80,15 +95,30 @@ namespace Trans.Client.ViewModel
             get => _to;
             set { 
                 Set(ref _to, value);
-                Trans.GetTranslator().setTo(To);
+                TransContext.GetTrans().GetTranslator().setTo(To);
                 GlobalData.Config.TransConfig.To = To;
                 GlobalData.Save();
             }
         }
-        public ITrans Trans { get; set; }
-        public MainViewModel(ITrans trans)
+
+        public TransStrategy _use;
+        public TransStrategy Use
         {
-            Trans = trans;
+            get => _use;
+            set
+            {
+                Set(ref _use, value);
+                //Trans.GetTranslator().setTo(To);
+                TransContext.Strategy = Use;
+                GlobalData.Config.TransConfig.Use = Use;
+                TransContext.GetTrans().GetTranslator().setTo(To);
+                GlobalData.Save();
+            }
+        }
+        public ITransContext TransContext { get; set; }
+        public MainViewModel(ITransContext transContext)
+        {
+            TransContext = transContext;
             DataList = new List<DemoDataModel>()
             {
                 new DemoDataModel()
@@ -106,10 +136,11 @@ namespace Trans.Client.ViewModel
                     ToFull="English"
                 }
             };
+            Use = GlobalData.Config.TransConfig.Use;
             To = GlobalData.Config.TransConfig.To;
         }
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
-          new RelayCommand(() => Growl.Warning("Global Shortcut Warning"))).Value;
+          new RelayCommand(() => Environment.Exit(0))).Value;
 
         public RelayCommand GlobalShortcutWarningCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(() => Grow())).Value;
@@ -118,9 +149,21 @@ namespace Trans.Client.ViewModel
         {
             //MainWindow.Cursor = Cliper.Instance;
             CropWindow.ShowDialog();
-            var src = Trans.GetOcror().CropImage();
-            var dest = Trans.GetTranslator().Translate(src);
-            Growl.InfoGlobal(dest);
+            //var timer = new System.Diagnostics.Stopwatch();
+
+            //timer.Start();
+            try
+            {
+                var src = TransContext.GetTrans().GetOcror().CropImage();
+                //timer.Stop();
+                //var ret = timer.ElapsedMilliseconds;
+                var dest = TransContext.GetTrans().GetTranslator().Translate(src);
+                Growl.InfoGlobal(dest);
+            }
+            catch { }
+            finally
+            {
+            }
         }
     }
 }

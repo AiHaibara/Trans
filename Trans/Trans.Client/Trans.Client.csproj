@@ -10,10 +10,11 @@
 
   <ItemGroup>
     <None Remove="Resources\cursor1.cur" />
+    <None Remove="Resources\cursor1.ico" />
     <None Remove="Resources\dropper.cur" />
     <None Remove="Resources\Img\Cover.png" />
     <None Remove="Resources\Img\icon-white.ico" />
-    <None Remove="Resources\Img\icon.ico" />
+    <None Remove="Resources\Img\icon1.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +27,11 @@
 
   <ItemGroup>
     <Resource Include="Resources\cursor1.cur" />
+    <Resource Include="Resources\Img\icon.ico" />
     <Resource Include="Resources\dropper.cur" />
     <Resource Include="Resources\Img\Cover.png" />
     <Resource Include="Resources\Img\icon-white.ico" />
-    <Resource Include="Resources\Img\icon.ico" />
+    <Resource Include="Resources\Img\icon1.ico" />
   </ItemGroup>
 
 </Project>
