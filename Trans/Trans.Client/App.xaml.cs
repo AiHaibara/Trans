@@ -41,7 +41,7 @@ namespace Trans.Client
             }
             else
             {
-                var splashScreen = new SplashScreen("Resources/Img/Cover.png");
+                var splashScreen = new SplashScreen("Resources/Img/1.gif");
                 splashScreen.Show(true);
 
                 base.OnStartup(e);
