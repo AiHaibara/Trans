@@ -1,5 +1,4 @@
-﻿using Google.Cloud.Translation.V2;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,17 +9,21 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using TencentCloud.Common;
+using TencentCloud.Common.Profile;
+using TencentCloud.Tmt.V20180321;
+using TencentCloud.Tmt.V20180321.Models;
 using Trans.Client.Data;
 
 namespace Trans.Client.Helper
 {
-    public class GoogleTrans : ITrans
+    public class TencentTrans : ITrans
     {
         public ITranslator translator { get; set; }
         public IOcror ocror { get; set; }
-        public TransStrategy Strategy => TransStrategy.Google;
+        public TransStrategy Strategy => TransStrategy.Tencent;
 
-        public GoogleTrans()
+        public TencentTrans()
         {
             this.ocror = new Ocror();
             this.translator = new Translator();
@@ -133,42 +136,64 @@ namespace Trans.Client.Helper
             public string src { get; set; }
             public string dst { get; set; }
         }
-
         public class Translator: ITranslator
         {
-            //public string TranslateText(MyResult src)
-            //{
-            //    Console.OutputEncoding = System.Text.Encoding.UTF8;
-            //    TranslationClient client = TranslationClient.Create();
-            //    var response = client.TranslateText(
-            //        text: "Hello World.",
-            //        targetLanguage: "ru",  // Russian
-            //        sourceLanguage: "en");  // English
-            //    Console.WriteLine(response.TranslatedText);
-            //    return response.TranslatedText;
-            //}
             static Translator()
             {
-                clientSecret = GlobalData.Config.TransConfig.GoogleTranslateKEY;
+                clientId = GlobalData.Config.TransConfig.TencentTranslateID;
+                clientSecret = GlobalData.Config.TransConfig.TencentTranslateKEY;
             }
-            private static String clientSecret = "GoolgeTranslateKey";
+
+            // 百度云中开通对应服务应用的 API Key 建议开通应用的时候多选服务
+            private static String clientId = "百度云应用的AK";
+            // 百度云中开通对应服务应用的 Secret Key
+            private static String clientSecret = "百度云应用的SK";
             public string to { get; set; }
             public async Task<string> Translate(MyResult src)
             {
-                //Console.OutputEncoding = System.Text.Encoding.UTF8;
+                Credential cred = new Credential
+                {
+                    SecretId = clientId,
+                    SecretKey = clientSecret
+                };
 
-                TranslationClient client = TranslationClient.CreateFromApiKey(clientSecret);
-                var detection = client.DetectLanguage(text: src.text);
-                var response = client.TranslateText(
-                    text: src.text,
-                    targetLanguage: to,  
-                    sourceLanguage: detection.Language);  
-                //Console.WriteLine(response.TranslatedText);
-                var result = response.TranslatedText;
-                if (result == null)
-                    return "None";
-                return result;
+                ClientProfile clientProfile = new ClientProfile();
+                HttpProfile httpProfile = new HttpProfile();
+                httpProfile.Endpoint = ("tmt.tencentcloudapi.com");
+                clientProfile.HttpProfile = httpProfile;
+
+                TmtClient client = new TmtClient(cred, "ap-guangzhou-open", clientProfile);
+                TextTranslateRequest req = new TextTranslateRequest();
+                TextTranslateRequest input = new TextTranslateRequest();
+                input.ProjectId = 0;
+                input.Source = "auto";
+                input.SourceText = src.text;
+                input.Target = to;
+                TextTranslateResponse resp = await client.TextTranslate(input);
+                var data = resp.TargetText;
+                if(data==null)
+                return "None";
+                return data;
             }
+            // 计算MD5值
+            public static string EncryptString(string str)
+            {
+                MD5 md5 = MD5.Create();
+                // 将字符串转换成字节数组
+                byte[] byteOld = Encoding.UTF8.GetBytes(str);
+                // 调用加密方法
+                byte[] byteNew = md5.ComputeHash(byteOld);
+                // 将加密结果转换为字符串
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in byteNew)
+                {
+                    // 将字节转换成16进制表示的字符串，
+                    sb.Append(b.ToString("x2"));
+                }
+                // 返回加密的字符串
+                return sb.ToString();
+            }
+
             public void setTo(string to)
             {
                 this.to = to;

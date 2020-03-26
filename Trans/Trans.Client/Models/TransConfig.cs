@@ -18,6 +18,8 @@ namespace Trans.Client.Models
         public string BaiduOCRSECRET { get; set; }
         public string BaiduTranslateID { get; set; }
         public string BaiduTranslateKEY { get; set; }
+        public string TencentTranslateID { get; set; }
+        public string TencentTranslateKEY { get; set; }
         public string GoogleTranslateKEY { get; set; }
         public string MicrosoftTranslateKEY { get; set; }
     }

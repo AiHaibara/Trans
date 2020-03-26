@@ -52,6 +52,9 @@ namespace Trans.Client.Helper
                 case TransStrategy.Baidu:
                     Trans = new BaiduTrans();
                     break;
+                case TransStrategy.Tencent:
+                    Trans = new TencentTrans();
+                    break;
                 case TransStrategy.Google:
                     Trans = new GoogleTrans();
                     break;

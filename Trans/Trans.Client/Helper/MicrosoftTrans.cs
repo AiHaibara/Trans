@@ -56,7 +56,7 @@ namespace Trans.Client.Helper
     {
         public ITranslator translator { get; set; }
         public IOcror ocror { get; set; }
-        public TransStrategy Strategy => TransStrategy.Baidu;
+        public TransStrategy Strategy => TransStrategy.Microsoft;
 
         public MicrosoftTrans()
         {
@@ -240,14 +240,14 @@ namespace Trans.Client.Helper
                 }
             }
             private static readonly string endpoint = "https://api.cognitive.microsofttranslator.com";
-            public string Translate(MyResult src)
+            public async Task<string> Translate(MyResult src)
             {
                 // This is our main function.
                 // Output languages are defined in the route.
                 // For a complete list of options, see API reference.
                 // https://docs.microsoft.com/azure/cognitive-services/translator/reference/v3-0-translate
                 string route = $"/translate?api-version=3.0&to={to}";
-                var result=TranslateTextRequest(clientSecret, endpoint, route, src.text).GetAwaiter().GetResult();
+                var result = await TranslateTextRequest(clientSecret, endpoint, route, src.text);
                 if (result == null)
                     return "None";
                 return result;

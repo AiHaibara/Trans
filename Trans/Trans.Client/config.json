@@ -9,8 +9,8 @@
     "BaiduOCRSECRET": "L2gvQLuSd9uWy2WiGGPybnvOhVbxV3UY",
     "BaiduTranslateID": "20200225000388572",
     "BaiduTranslateKEY": "NKC5uCd85TFfspm_NOeW",
-    "TencentTranslateID": "",
-    "TencentTranslateKEY": "",
+    "TencentTranslateID": "AKIDXop44pvYWEeokRe62h6F8nCPKzOWFfjY",
+    "TencentTranslateKEY": "kFUbT5RmvrWQmstdlDPWLfCTfd9m9RSC",
     "GoogleTranslateKEY": "",
     "MicrosoftTranslateKEY": ""
   },
@@ -111,6 +111,31 @@
       "ocr": "zh-tw",
       "trans": "zh-TW",
       "name": "Google"
+    },
+
+    {
+      "type": "en",
+      "ocr": "en",
+      "trans": "en",
+      "name": "Tencent"
+    },
+    {
+      "type": "zh",
+      "ocr": "zh-cn",
+      "trans": "zh",
+      "name": "Tencent"
+    },
+    {
+      "type": "jp",
+      "ocr": "ja",
+      "trans": "jp",
+      "name": "Tencent"
+    },
+    {
+      "type": "zh_tw",
+      "ocr": "zh-tw",
+      "trans": "zh-TW",
+      "name": "Tencent"
     }
   ]
 }

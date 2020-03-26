@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Trans.Client.Models;
 using System.Windows;
 using System.Linq;
+using System.Threading.Tasks;
 #if netle40
 using GalaSoft.MvvmLight.Command;
 #else
@@ -134,7 +135,7 @@ namespace Trans.Client.ViewModel
         public RelayCommand GlobalShortcutWarningCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(() => Grow())).Value;
 
-        public void Grow()
+        public async Task Grow()
         {
             //MainWindow.Cursor = Cliper.Instance;
             CropWindow.ShowDialog();
@@ -146,7 +147,7 @@ namespace Trans.Client.ViewModel
                 var src = TransContext.GetTrans().GetOcror().CropImage();
                 //timer.Stop();
                 //var ret = timer.ElapsedMilliseconds;
-                var dest = TransContext.GetTrans().GetTranslator().Translate(src);
+                var dest =await TransContext.GetTrans().GetTranslator().Translate(src);
                 Growl.InfoGlobal(dest);
             }
             catch (Exception ex){

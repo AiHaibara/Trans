@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Web;
 using Trans.Client.Data;
 
@@ -148,7 +149,7 @@ namespace Trans.Client.Helper
             // 百度云中开通对应服务应用的 Secret Key
             private static String clientSecret = "百度云应用的SK";
             public string to { get; set; }
-            public string Translate(MyResult src)
+            public async Task<string> Translate(MyResult src)
             {
                 // 原文
                 string q = src.text;
