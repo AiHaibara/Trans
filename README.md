@@ -5,11 +5,12 @@ Please register and apply your own key.
 
 ![DemoGif](https://raw.githubusercontent.com/AiHaibara/Trans/master/demo.gif)
 
-# Roadmap
-
-Now only support Baidu Api. or use your own train model web, may be more third api will be added in the future.
+Now support [Baidu Api, Tencent Api, Google Api, Microsoft Api](need config your own key), Custom Api (need build your own trans web server)
 
 ## Special thanks to
 [![HandyControl](https://raw.githubusercontent.com/HandyOrg/HandyOrgResource/master/HandyControl/Resources/icon.png)](https://github.com/HandyOrg/HandyControl/)
 <br/>
 **BaiduApi**
+**TencentApi**
+**GoogleApi**
+**MicrosoftApi**
