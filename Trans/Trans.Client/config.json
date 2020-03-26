@@ -1,1 +1,116 @@
-{"Lang":"en","Skin":0,"TransConfig":{"To":"zh","Use":"Baidu","HotKey":"Alt \u002B A","BaiduOCRID":"8hlSDPGBDTpSw1BGxHGMGjZR","BaiduOCRSECRET":"L2gvQLuSd9uWy2WiGGPybnvOhVbxV3UY","BaiduTranslateID":"20200225000388572","BaiduTranslateKEY":"NKC5uCd85TFfspm_NOeW"},"NotifyIconNotified":true,"Langs":[{"type":"en","ocr":"en","trans":"en","name":"Custom"},{"type":"zh","ocr":"zh-cn","trans":"zh","name":"Custom"},{"type":"jp","ocr":"ja","trans":"jp","name":"Custom"},{"type":"zh_tw","ocr":"zh-tw","trans":"zh-tw","name":"Custom"},{"type":"en","ocr":"en","trans":"en","name":"Baidu"},{"type":"zh","ocr":"zh-cn","trans":"zh","name":"Baidu"},{"type":"jp","ocr":"ja","trans":"jp","name":"Baidu"},{"type":"zh_tw","ocr":"zh-tw","trans":"zh-tw","name":"Baidu"}]}
+{
+  "Lang": "en",
+  "Skin": 0,
+  "TransConfig": {
+    "To": "zh",
+    "Use": "Baidu",
+    "HotKey": "Alt \u002B A",
+    "BaiduOCRID": "8hlSDPGBDTpSw1BGxHGMGjZR",
+    "BaiduOCRSECRET": "L2gvQLuSd9uWy2WiGGPybnvOhVbxV3UY",
+    "BaiduTranslateID": "20200225000388572",
+    "BaiduTranslateKEY": "NKC5uCd85TFfspm_NOeW",
+    "TencentTranslateID": "AKIDpRnxrN5necXEjympvmMr9F5eIkANoTEl",
+    "TencentTranslateKEY": "TikX4L7j5C5kALn03qNIwLUM0VkiwxlN",
+    "GoogleTranslateKEY": "",
+    "MicrosoftTranslateKEY": ""
+  },
+  "NotifyIconNotified": true,
+  "Langs": [
+    {
+      "type": "en",
+      "ocr": "en",
+      "trans": "en",
+      "name": "Custom"
+    },
+    {
+      "type": "zh",
+      "ocr": "zh-cn",
+      "trans": "zh",
+      "name": "Custom"
+    },
+    {
+      "type": "jp",
+      "ocr": "ja",
+      "trans": "jp",
+      "name": "Custom"
+    },
+    {
+      "type": "zh_tw",
+      "ocr": "zh-tw",
+      "trans": "zh-tw",
+      "name": "Custom"
+    },
+    {
+      "type": "en",
+      "ocr": "en",
+      "trans": "en",
+      "name": "Baidu"
+    },
+    {
+      "type": "zh",
+      "ocr": "zh-cn",
+      "trans": "zh",
+      "name": "Baidu"
+    },
+    {
+      "type": "jp",
+      "ocr": "ja",
+      "trans": "jp",
+      "name": "Baidu"
+    },
+    {
+      "type": "zh_tw",
+      "ocr": "zh-tw",
+      "trans": "zh-tw",
+      "name": "Baidu"
+    },
+    {
+      "type": "en",
+      "ocr": "en",
+      "trans": "en",
+      "name": "Microsoft"
+    },
+    {
+      "type": "zh",
+      "ocr": "zh-cn",
+      "trans": "zh",
+      "name": "Microsoft"
+    },
+    {
+      "type": "jp",
+      "ocr": "ja",
+      "trans": "jp",
+      "name": "Microsoft"
+    },
+    {
+      "type": "zh_tw",
+      "ocr": "zh-tw",
+      "trans": "zh-tw",
+      "name": "Microsoft"
+    },
+    {
+      "type": "en",
+      "ocr": "en",
+      "trans": "en",
+      "name": "Google"
+    },
+    {
+      "type": "zh",
+      "ocr": "zh-cn",
+      "trans": "zh",
+      "name": "Google"
+    },
+    {
+      "type": "jp",
+      "ocr": "ja",
+      "trans": "jp",
+      "name": "Google"
+    },
+    {
+      "type": "zh_tw",
+      "ocr": "zh-tw",
+      "trans": "zh-TW",
+      "name": "Google"
+    }
+  ]
+}

@@ -14,10 +14,13 @@
     <None Remove="Resources\cursor1.ico" />
     <None Remove="Resources\dropper.cur" />
     <None Remove="Resources\Img\1.gif" />
+    <None Remove="Resources\Img\Bg.png" />
     <None Remove="Resources\Img\Cover.png" />
     <None Remove="Resources\Img\icon-white.ico" />
     <None Remove="Resources\Img\icon.ico" />
+    <None Remove="Resources\Img\icon.png" />
     <None Remove="Resources\Img\icon1.ico" />
+    <None Remove="Resources\Img\icon_.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,21 +31,26 @@
 
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
+    <PackageReference Include="Google.Cloud.Translation.V2" Version="2.0.0" />
     <PackageReference Include="HandyControl" Version="2.3.0" />
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
+    <PackageReference Include="TencentCloudSDK" Version="3.0.45" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\cursor1.cur" />
     <Resource Include="Resources\Img\1.gif" />
+    <Resource Include="Resources\Img\Bg.png" />
     <Resource Include="Resources\Img\icon.ico" />
+    <Resource Include="Resources\Img\icon.png" />
     <Resource Include="Resources\Img\icon_.ico" />
     <Resource Include="Resources\dropper.cur" />
     <Resource Include="Resources\Img\Cover.png" />
     <Resource Include="Resources\Img\icon-white.ico" />
     <Resource Include="Resources\Img\icon1.ico" />
+    <Resource Include="Resources\Img\icon_.png" />
   </ItemGroup>
 
 </Project>

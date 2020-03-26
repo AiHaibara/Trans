@@ -41,7 +41,7 @@ namespace Trans.Client
             }
             else
             {
-                var splashScreen = new SplashScreen("Resources/Img/1.gif");
+                var splashScreen = new SplashScreen("Resources/Img/icon.png");
                 splashScreen.Show(true);
 
                 base.OnStartup(e);
@@ -53,7 +53,7 @@ namespace Trans.Client
                 //ConfigHelper.Instance.SetLang(GlobalData.Config.Lang);
 
                 //if (GlobalData.Config.Skin != SkinType.Default)
-                //{
+                //{ 
                 //    UpdateSkin(GlobalData.Config.Skin);
                 //}
 

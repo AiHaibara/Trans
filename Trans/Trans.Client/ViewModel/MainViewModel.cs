@@ -149,7 +149,9 @@ namespace Trans.Client.ViewModel
                 var dest = TransContext.GetTrans().GetTranslator().Translate(src);
                 Growl.InfoGlobal(dest);
             }
-            catch { }
+            catch (Exception ex){
+                var x = ex;
+            }
             finally
             {
             }

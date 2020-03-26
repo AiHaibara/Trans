@@ -18,7 +18,7 @@ namespace Trans.Client.Helper
         Tencent,
         Custom,
         Google,
-        Bing,
+        Microsoft,
     }
     public interface ITransContext
     {
@@ -51,6 +51,12 @@ namespace Trans.Client.Helper
             switch (Strategy) {
                 case TransStrategy.Baidu:
                     Trans = new BaiduTrans();
+                    break;
+                case TransStrategy.Google:
+                    Trans = new GoogleTrans();
+                    break;
+                case TransStrategy.Microsoft:
+                    Trans = new MicrosoftTrans();
                     break;
                 case TransStrategy.Custom:
                     Trans = new CustomTrans();
