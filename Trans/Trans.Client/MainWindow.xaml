@@ -23,7 +23,7 @@
         <userControl:NoUserContent/>
     </hc:Window.NonClientAreaContent>-->
     <Grid Name="DisplayArea">
-        <Image Source="/Trans.Client;component/Resources/Img/Bg.png" Stretch="Fill"></Image>
+        <Image Source="/Trans.Client;component/Resources/Img/Bg.png" Stretch="Fill" Initialized="MainWindow_Initialized"></Image>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">
                 <Label HorizontalAlignment="Center" MinWidth="60" Background="Transparent" BorderBrush="Transparent" Foreground="White">To :</Label>

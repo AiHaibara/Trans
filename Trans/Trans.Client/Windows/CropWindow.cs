@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -26,7 +27,6 @@ namespace Trans.Client.Windows
             Instance_StateChanged(null, null);
         }
         public static bool flag = false;
-
         private static void Instance_StateChanged(object sender, EventArgs e)
         {
             Thread.Sleep(200);
@@ -48,11 +48,13 @@ namespace Trans.Client.Windows
             path.Data = rectangle;
             path.Stroke = new SolidColorBrush() { Color = Colors.Red, Opacity = 1f };
             window.Content = canvas;
-            BitmapSource source = CopyScreen();
-            var image = new System.Windows.Controls.Image() { Source = source };
+            //var scale=getScalingFactor();
+            //Data.GlobalData.DpiScale = new DpiScale(Data.GlobalData.DpiScale.DpiScaleX * scale.DpiScaleX, Data.GlobalData.DpiScale.DpiScaleY * scale.DpiScaleY);
+            BitmapSource source = CopyScreen(Data.GlobalData.DpiScale);
+            var image = new System.Windows.Controls.Image() { Source = source, Width = Data.GlobalData.ScreenWidth/ Data.GlobalData.DpiScale.DpiScaleX, Height= Data.GlobalData.ScreenHeight/ Data.GlobalData.DpiScale.DpiScaleY };
             canvas.Children.Add(image);
             canvas.Children.Add(path);
-            //System.Windows.Shapes.Rectangle rectangle = new System.Windows.Shapes.Rectangle();
+            //System.Windows.Shapes.Rectangle rectangle = new System.Windows.Shapes.Rectangle();qqqq
             System.Windows.Point? start = null;
             System.Windows.Point? end = null;
             window.MouseDown += (s, e) =>
@@ -98,9 +100,9 @@ namespace Trans.Client.Windows
                 Window window = (Window)aa;
                 window.Topmost = true;
             };
-            window.Activate();
             window.Topmost = true;
             window.ShowDialog();
+            window.Activate();
         }
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -110,7 +112,7 @@ namespace Trans.Client.Windows
             if (img == null)
                 throw new ArgumentNullException("img");
             Console.WriteLine(rect);
-            var crop = new CroppedBitmap(img, new Int32Rect(rect.X, rect.Y, Math.Max(1,rect.Width), Math.Max(1,rect.Height)));
+            var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X * Data.GlobalData.DpiScale.DpiScaleX), (int)(rect.Y * Data.GlobalData.DpiScale.DpiScaleY), Math.Max(1,(int)(rect.Width * Data.GlobalData.DpiScale.DpiScaleX)), Math.Max(1,(int)(rect.Height* Data.GlobalData.DpiScale.DpiScaleY))));
             using (var fileStream = new FileStream(@"source.jpg", FileMode.Create))
             {
                 BitmapEncoder encoder = new PngBitmapEncoder();
@@ -122,9 +124,9 @@ namespace Trans.Client.Windows
         {
             return new Bitmap((int)SystemParameters.PrimaryScreenWidth, (int)SystemParameters.PrimaryScreenHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
         }
-        private static BitmapSource CopyScreen()
+        private static BitmapSource CopyScreen(DpiScale scale)
         {
-            using (var screenBmp = new Bitmap((int)SystemParameters.PrimaryScreenWidth, (int)SystemParameters.PrimaryScreenHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb))
+            using (var screenBmp = new Bitmap((int)(Data.GlobalData.ScreenWidth), (int)(Data.GlobalData.ScreenHeight), System.Drawing.Imaging.PixelFormat.Format24bppRgb))
             {
                 IntPtr hbitmap = IntPtr.Zero;
                 try

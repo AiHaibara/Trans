@@ -35,7 +35,6 @@ namespace Trans.Client
             GlobalData.Init();
             Instance = this;
             InitializeComponent();
-
             if (GlobalData.Config.TransConfig.HotKey != null)
             {
                 var text = GlobalData.Config.TransConfig.HotKey;
@@ -56,6 +55,21 @@ namespace Trans.Client
                 }
             }
 
+        }
+
+        private void MainWindow_Initialized(object sender, EventArgs e)
+        {
+            System.Windows.Controls.Image image = (System.Windows.Controls.Image)sender;
+            GlobalData.DpiScale = VisualTreeHelper.GetDpi(image);
+            GlobalData.ScreenWidth = SystemParameters.PrimaryScreenWidth * GlobalData.DpiScale.DpiScaleX;
+            GlobalData.ScreenHeight = SystemParameters.PrimaryScreenHeight* GlobalData.DpiScale.DpiScaleY;
+            image.DpiChanged += MainWindow_DpiChanged;
+        }
+
+        private void MainWindow_DpiChanged(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.Image image = (System.Windows.Controls.Image)sender;
+            GlobalData.DpiScale = VisualTreeHelper.GetDpi(image);
         }
 
         public static MainWindow Instance { get; set; }

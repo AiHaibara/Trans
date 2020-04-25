@@ -134,11 +134,15 @@ namespace Trans.Client.ViewModel
 
         public RelayCommand GlobalShortcutWarningCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(() => Grow())).Value;
+        public static bool isActive = false;
 
         public async Task Grow()
         {
+            if (isActive == true) return;
+            isActive = true;
+            //GlobalData.DpiScale = System.Windows.Media.VisualTreeHelper.GetDpi(MainWindow.Instance);
             //MainWindow.Cursor = Cliper.Instance;
-            CropWindow.ShowDialog();
+            CropWindow.ShowDialog();                                                                                         
             //var timer = new System.Diagnostics.Stopwatch();
 
             //timer.Start();
@@ -155,6 +159,7 @@ namespace Trans.Client.ViewModel
             }
             finally
             {
+                isActive = false;
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using System.Windows;
 
 namespace Trans.Client.Data
 {
@@ -36,5 +37,10 @@ namespace Trans.Client.Data
         }
 
         public static AppConfig Config { get; set; }
+
+        public static DpiScale DpiScale { get; set; }
+
+        public static double ScreenHeight { get; set; }
+        public static double ScreenWidth { get; set; }
     }
 }
