@@ -7,11 +7,21 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tools\Helper\**" />
+    <EmbeddedResource Remove="Tools\Helper\**" />
+    <None Remove="Tools\Helper\**" />
+    <Page Remove="Tools\Helper\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="ViewModel\GrowlDemoViewModel.cs" />
+    <Compile Remove="Windows\GrowlDemoWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="app.manifest" />
     <None Remove="config.json" />
     <None Remove="Resources\cursor1.cur" />
     <None Remove="Resources\cursor1.ico" />
@@ -24,6 +34,16 @@
     <None Remove="Resources\Img\icon.png" />
     <None Remove="Resources\Img\icon1.ico" />
     <None Remove="Resources\Img\icon_.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Windows\GrowlDemoWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Tools\Helper\Cliper.cs" />
+    <Compile Include="Tools\Helper\ScreenCapture.cs" />
+    <Compile Include="Tools\Helper\Win32Helper.cs" />
   </ItemGroup>
 
   <ItemGroup>

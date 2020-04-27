@@ -45,9 +45,9 @@
         </StackPanel>
         <!--<Image Name='imageCapture' Stretch='UniformToFill'/>-->
 
-        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right">
+        <hc:ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalAlignment="Right" IsInertiaEnabled="True" IsPenetrating="True">
             <StackPanel hc:Growl.GrowlParent="True" VerticalAlignment="Top" Margin="0,10,10,10"/>
-        </ScrollViewer>
+        </hc:ScrollViewer>
         <hc:NotifyIcon Token="{x:Static data:MessageToken.NotifyIconDemo}" Text="Trans" IsBlink="{Binding ContextMenuIsBlink}" Visibility="{Binding ContextMenuIsShow,Converter={StaticResource Boolean2VisibilityConverter}}"
                        Icon="/Trans.Client;component/Resources/Img/icon.ico">
             <hc:NotifyIcon.ContextMenu>
