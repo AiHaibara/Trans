@@ -58,7 +58,8 @@ namespace Trans.Client.Windows
                 float dpiX = 96/graphics.DpiX;
                 float dpiY = 96/graphics.DpiY;
                 Data.GlobalData.DpiScale = new DpiScale(Data.GlobalData.ScreenHeight/(graphics.VisibleClipBounds.Height * dpiY), Data.GlobalData.ScreenWidth/(graphics.VisibleClipBounds.Width*dpiX));
-                image = new System.Windows.Controls.Image() { Source = source, Stretch=Stretch.Fill, Height=graphics.VisibleClipBounds.Height*dpiY,Width=graphics.VisibleClipBounds.Width*dpiX };
+                image = new System.Windows.Controls.Image() { Source = source, SnapsToDevicePixels = true, Height =graphics.VisibleClipBounds.Height*dpiY, Width=graphics.VisibleClipBounds.Width*dpiX };
+                //RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
                 canvas.Children.Add(image);
             }
             canvas.Children.Add(path);
@@ -108,9 +109,9 @@ namespace Trans.Client.Windows
                 Window window = (Window)aa;
                 window.Topmost = true;
             };
+            window.Activate();
             window.Topmost = true;
             window.ShowDialog();
-            window.Activate();
         }
 
         public enum ImageFormats

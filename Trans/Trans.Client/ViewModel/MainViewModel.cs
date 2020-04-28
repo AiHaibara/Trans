@@ -12,11 +12,7 @@ using Trans.Client.Models;
 using System.Windows;
 using System.Linq;
 using System.Threading.Tasks;
-#if netle40
 using GalaSoft.MvvmLight.Command;
-#else
-using GalaSoft.MvvmLight.CommandWpf;
-#endif
 using Trans.Client.Data;
 
 namespace Trans.Client.ViewModel
