@@ -1,7 +1,7 @@
 # Trans
-
+  
 Please register and apply your own key.
-### Default HotKey is Alt+Q
+### Default HotKey is Alt+Q Translate it, Alt+1 switch target language.
 
 ![DemoGif](https://raw.githubusercontent.com/AiHaibara/Trans/master/demo.gif)
 
