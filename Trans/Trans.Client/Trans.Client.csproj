@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="Tools\Helper\Cliper.cs" />
+    <Compile Include="Tools\Helper\PathHelper.cs" />
     <Compile Include="Tools\Helper\ScreenCapture.cs" />
     <Compile Include="Tools\Helper\Win32Helper.cs" />
   </ItemGroup>

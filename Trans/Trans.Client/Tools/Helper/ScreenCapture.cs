@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using Trans.Client.Data;
+using Trans.Client.Tools.Helper;
 
 namespace Trans.Client.Tools
 {
@@ -100,7 +102,7 @@ namespace Trans.Client.Tools
                 throw new ArgumentNullException("img");
             Console.WriteLine(rect);
             var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X * Data.GlobalData.DpiScale.DpiScaleX), (int)(rect.Y * Data.GlobalData.DpiScale.DpiScaleY), Math.Max(1, (int)(rect.Width * Data.GlobalData.DpiScale.DpiScaleX)), Math.Max(1, (int)(rect.Height * Data.GlobalData.DpiScale.DpiScaleY))));
-            using (var fileStream = new FileStream(@"source.jpg", FileMode.Create))
+            using (var fileStream = new FileStream(PathHelper.FullPath(GlobalData.SourcePath), FileMode.Create))
             {
                 BitmapEncoder encoder = new PngBitmapEncoder();
                 encoder.Frames.Add(BitmapFrame.Create(crop));

@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using Trans.Client.Data;
+using Trans.Client.Tools.Helper;
 
 namespace Trans.Client.Helper
 {
@@ -68,6 +69,7 @@ namespace Trans.Client.Helper
 
         public class BaiduOcrResult
         {
+            public int? error_code { get; set; }
             public long log_id { get; set; }
             public int words_result_num { get; set; }
             public List<Words_Result> words_result { get; set; }
@@ -82,8 +84,9 @@ namespace Trans.Client.Helper
         {
             static Ocror()
             {
-                AccessToken.getAccessToken();
+                //AccessToken.getAccessToken();
             }
+            bool flag = false;
             // 通用文字识别
             public MyResult CropImage()
             {
@@ -94,7 +97,7 @@ namespace Trans.Client.Helper
                 request.Method = "post";
                 request.KeepAlive = true;
                 // 图片的base64编码
-                string base64 = getFileBase64("source.jpg");
+                string base64 = getFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
                 String str = "image=" + HttpUtility.UrlEncode(base64);
                 byte[] buffer = encoding.GetBytes(str);
                 request.ContentLength = buffer.Length;
@@ -105,9 +108,23 @@ namespace Trans.Client.Helper
                 Console.WriteLine("通用文字识别:");
                 Console.WriteLine(result);
                 var data = JsonSerializer.Deserialize<BaiduOcrResult>(result);
-                if (data == null|| data.words_result==null)
+                if (data.error_code != null)
+                {
+                    if (!flag)
+                    {
+                        AccessToken.getAccessToken();
+                        flag = true;
+                    }
+                    else
+                    {
+                        throw new Exception("application id or secret not valid");
+                    }
+                    return CropImage();
+                }
+                flag = false;
+                if (data == null || data.words_result == null)
                     return new MyResult { text = "None", language = "auto" };
-                return new MyResult { text = string.Join(';', data.words_result?.Select(p => p.words)),language= "auto" };
+                return new MyResult { text = string.Join(';', data.words_result?.Select(p => p.words)), language = "auto" };
             }
 
             public static String getFileBase64(String fileName)

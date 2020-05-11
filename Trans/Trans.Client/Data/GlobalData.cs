@@ -44,5 +44,7 @@ namespace Trans.Client.Data
         public static double ScreenWidth { get; set; }
 
         public static bool IsAutoRun { get; set; }
+
+        public static string SourcePath { get; set; } = "source.jpg";
     }
 }

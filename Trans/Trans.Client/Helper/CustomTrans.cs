@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using Trans.Client.Data;
+using Trans.Client.Tools.Helper;
 
 namespace Trans.Client.Helper
 {
@@ -98,7 +99,7 @@ namespace Trans.Client.Helper
                 request.Method = "post";
                 request.KeepAlive = true;
                 // 图片的base64编码
-                string base64 = getFileBase64("source.jpg");
+                string base64 = getFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
                 //String str = HttpUtility.UrlEncode(base64);
                 String str = base64;
                 byte[] buffer = encoding.GetBytes(str);
