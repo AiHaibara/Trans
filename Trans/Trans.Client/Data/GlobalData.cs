@@ -42,5 +42,7 @@ namespace Trans.Client.Data
 
         public static double ScreenHeight { get; set; }
         public static double ScreenWidth { get; set; }
+
+        public static bool IsAutoRun { get; set; }
     }
 }

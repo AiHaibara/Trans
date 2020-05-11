@@ -17,5 +17,7 @@ namespace Trans.Client.Data
         public TransConfig TransConfig { get; set; }
         public bool NotifyIconNotified { get; set; }
         public List<LangData> Langs { get; set; }
+
+        public bool IsAutoStartUp { get; set; }
     }
 }

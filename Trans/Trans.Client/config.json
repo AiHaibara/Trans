@@ -15,6 +15,7 @@
     "MicrosoftTranslateKEY": ""
   },
   "NotifyIconNotified": true,
+  "IsAutoStartup": true,
   "Langs": [
     {
       "type": "en",

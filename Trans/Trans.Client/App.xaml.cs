@@ -23,6 +23,14 @@ namespace Trans.Client
 #pragma warning restore IDE0052
         protected override void OnStartup(StartupEventArgs e)
         {
+            for (int i = 0; i != e.Args.Length; ++i)
+            {
+                if (e.Args[i] == "--autorun")
+                {
+                    Data.GlobalData.IsAutoRun = true;
+                }
+            }
+
             AppMutex = new Mutex(true, "Trans", out var createdNew);
 
             if (!createdNew)
@@ -41,11 +49,13 @@ namespace Trans.Client
             }
             else
             {
-                var splashScreen = new SplashScreen("Resources/Img/icon.png");
-                splashScreen.Show(true);
 
+                if (!Data.GlobalData.IsAutoRun)
+                {
+                    var splashScreen = new SplashScreen("Resources/Img/icon.png");
+                    splashScreen.Show(true);
+                }
                 base.OnStartup(e);
-
                 //UpdateRegistry();
 
                 //ShutdownMode = ShutdownMode.OnMainWindowClose;

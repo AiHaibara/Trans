@@ -28,13 +28,14 @@ namespace Trans.Client
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : System.Windows.Window
+    public partial class MainWindow : HandyControl.Controls.Window
     {
         public MainWindow()
         {
             GlobalData.Init();
             Instance = this;
             InitializeComponent();
+            ContentRendered += MainWindow_ContentRendered;
             if (GlobalData.Config.TransConfig.HotKey != null)
             {
                 var text = GlobalData.Config.TransConfig.HotKey;
@@ -55,6 +56,14 @@ namespace Trans.Client
                 }
             }
 
+        }
+
+        private void MainWindow_ContentRendered(object sender, EventArgs e)
+        {
+            if (GlobalData.IsAutoRun)
+            {
+                Hide();
+            }
         }
 
         private void MainWindow_Initialized(object sender, EventArgs e)
@@ -119,6 +128,7 @@ namespace Trans.Client
             GlobalShortcut.Init(this);
             GlobalData.Config.TransConfig.HotKey = (DataContext as MainViewModel).KeyText;
             GlobalData.Save();
+            Growl.SuccessGlobal($"HotKey is {keyStr}");
         }
         //Mouse.OverrideCursor = DisplayArea.Cursor;
     }

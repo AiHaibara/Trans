@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using Trans.Client.Data;
+using Microsoft.Win32;
 
 namespace Trans.Client.ViewModel
 {
@@ -98,6 +99,10 @@ namespace Trans.Client.ViewModel
                 TransContext.GetTrans().GetTranslator().setTo(strategyTo);
                 GlobalData.Config.TransConfig.To = To;
                 GlobalData.Save();
+                if (!InitSetting)
+                {
+                    Growl.SuccessGlobal($"Target Lang is {To}");
+                }
             }
         }
 
@@ -116,21 +121,74 @@ namespace Trans.Client.ViewModel
                     strategyTo = LangType.en.ToString();
                 TransContext.GetTrans().GetTranslator().setTo(strategyTo);
                 GlobalData.Save();
+                if (!InitSetting)
+                {
+                    Growl.SuccessGlobal($"Target Use is {Use}");
+                }
             }
         }
+
+        private bool _isAutoStartup = false;
+        public bool IsAutoStartup
+        {
+            get => _isAutoStartup;
+#if netle40
+            set => Set(nameof(IsAutoStartup), ref _isAutoStartup, value);
+#else 
+            set
+            {
+                // The path to the key where Windows looks for startup applications
+                RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                if (value)
+                {
+                    // Add the value in the registry so that the application runs at startup
+                    rkApp.SetValue("Trans.Client", System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName+" --autorun");
+                }
+                else
+                {
+                    rkApp.DeleteValue("Trans.Client", false);
+                }
+                GlobalData.Config.IsAutoStartUp = value;
+                GlobalData.Save();
+                Set(ref _isAutoStartup, value);
+                if (!InitSetting)
+                {
+                    if (value)
+                        Growl.SuccessGlobal("Auto Startup is On");
+                    else
+                        Growl.SuccessGlobal("Auto Startup is Off");
+                }
+            }
+#endif
+        }
+
         public ITransContext TransContext { get; set; }
+        public bool InitSetting { get; set; }
         public MainViewModel(ITransContext transContext)
         {
             TransContext = transContext;
+            InitSetting = true;
             To = GlobalData.Config.TransConfig.To;
             Use = GlobalData.Config.TransConfig.Use;
+            IsAutoStartup = GlobalData.Config.IsAutoStartUp;
+            InitSetting = false;
         }
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
           new RelayCommand(() => Environment.Exit(0))).Value;
 
         public RelayCommand GlobalShortcutWarningCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(() => Grow())).Value;
+
+        public RelayCommand GlobalShortcutSwitchCmd => new Lazy<RelayCommand>(() =>
+            new RelayCommand(() => SwitchToLang())).Value;
         public static bool isActive = false;
+        public async Task SwitchToLang()
+        {
+            var index=Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList().FindIndex(p=>p==To);
+            int cnt=Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList().Count();
+            index = (index + 1) % cnt;
+            To = Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList()[index];
+        }
 
         public async Task Grow()
         {
