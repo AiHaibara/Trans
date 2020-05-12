@@ -173,6 +173,10 @@ namespace Trans.Client.ViewModel
             IsAutoStartup = GlobalData.Config.IsAutoStartUp;
             InitSetting = false;
         }
+
+        public RelayCommand MouseCmd => new Lazy<RelayCommand>(() =>
+            new RelayCommand(() => Grow())).Value;
+
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
           new RelayCommand(() => Environment.Exit(0))).Value;
 

@@ -63,11 +63,11 @@
                 </ContextMenu>
             </hc:NotifyIcon.ContextMenu>
             <hc:Interaction.Triggers>
-                <hc:EventTrigger EventName="Click">
+                <hc:EventTrigger EventName="MouseDoubleClick">
                     <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top"/>
                 </hc:EventTrigger>
-                <hc:EventTrigger EventName="MouseDoubleClick">
-                    <hc:EventToCommand Command="{Binding MouseCmd}" CommandParameter="MouseDoubleClick"/>
+                <hc:EventTrigger EventName="Click">
+                    <hc:EventToCommand Command="{Binding MouseCmd}"/>
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>
