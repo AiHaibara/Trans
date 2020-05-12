@@ -3,7 +3,7 @@
 Please register and apply your own key.
 ### Default HotKey is Alt+Q Translate it, Alt+1 switch target language.
 
-![DemoGif](https://raw.githubusercontent.com/AiHaibara/Trans/master/demo.gif)
+![DemoGif](https://raw.githubusercontent.com/AiHaibara/Trans/master/demo2.gif)
 
 Now support [Baidu Api, Tencent Api, Google Api, Microsoft Api](need config your own key), Custom Api (need build your own trans web server)
 
