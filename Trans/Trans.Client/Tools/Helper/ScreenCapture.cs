@@ -68,7 +68,7 @@ namespace Trans.Client.Tools
 
         public static BitmapSource CopyScreen()
         {
-            using (var screenBmp = new Bitmap((int)(Data.GlobalData.ScreenWidth), (int)(Data.GlobalData.ScreenHeight), System.Drawing.Imaging.PixelFormat.Format32bppArgb))
+            using (var screenBmp = new Bitmap((int)(Data.GlobalData.ScreenWidth), (int)(Data.GlobalData.ScreenHeight), System.Drawing.Imaging.PixelFormat.Format64bppArgb))
             {
                 IntPtr hbitmap = IntPtr.Zero;
                 try
