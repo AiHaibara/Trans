@@ -207,6 +207,7 @@ namespace Trans.Client.ViewModel
                 //var ret = timer.ElapsedMilliseconds;
                 var dest =await TransContext.GetTrans().GetTranslator().Translate(src);
                 Growl.InfoGlobal(dest);
+                Clipboard.SetText(dest);
             }
             catch (Exception ex){
                 var x = ex;
