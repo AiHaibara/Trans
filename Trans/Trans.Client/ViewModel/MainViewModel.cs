@@ -249,6 +249,7 @@ namespace Trans.Client.ViewModel
                 {
                     await Grow(dest);
                 }
+                Clipboard.SetText(dest);
             }
             catch (Exception ex)
             {
