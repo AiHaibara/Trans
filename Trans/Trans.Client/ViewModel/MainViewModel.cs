@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using Trans.Client.Data;
 using Microsoft.Win32;
+using Trans.Client.Tools.Helper;
 
 namespace Trans.Client.ViewModel
 {
@@ -199,19 +200,19 @@ namespace Trans.Client.ViewModel
         }
 
         public RelayCommand MouseCmd => new Lazy<RelayCommand>(() =>
-            new RelayCommand(() => Trans())).Value;
+            new RelayCommand(async() => await Trans())).Value;
 
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
           new RelayCommand(() => Environment.Exit(0))).Value;
 
         public RelayCommand GlobalShortcutWarningCmd => new Lazy<RelayCommand>(() =>
-            new RelayCommand(() => Trans())).Value;
+            new RelayCommand(async () => await Trans())).Value;
 
         public RelayCommand GlobalShortcutSwitchCmd => new Lazy<RelayCommand>(() =>
-            new RelayCommand(() => SwitchToLang())).Value;
+            new RelayCommand(async() =>await SwitchToLang())).Value;
 
-        public RelayCommand OpenCmd => new Lazy<RelayCommand>(() =>
-            new RelayCommand(() => Sprite.Show(new AppSprite()))).Value;
+        //public RelayCommand OpenCmd => new Lazy<RelayCommand>(() =>
+        //    new RelayCommand(() => Sprite.Show(new AppSprite()))).Value;
 
         public static bool isActive = false;
         public async Task SwitchToLang()
@@ -220,6 +221,7 @@ namespace Trans.Client.ViewModel
             int cnt=Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList().Count();
             index = (index + 1) % cnt;
             To = Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList()[index];
+            await Task.CompletedTask;
         }
 
         public async Task Trans()
@@ -241,8 +243,10 @@ namespace Trans.Client.ViewModel
 
                 if (IsNearMouse)
                 {
-                    var box = new AppSprite();
-                    Sprite.Show(box);
+                    var box = new AppSprite(dest);
+                    POINT pt;
+                    InteropMethods.GetCursorPos(out pt);
+                    Windows.Sprite.Show(box,pt);
                     //(box.DataContext as AppSpriteViewModel).Dest = dest;
                 }
                 else
@@ -264,6 +268,7 @@ namespace Trans.Client.ViewModel
         public async Task Grow(string dest)
         {
             Growl.InfoGlobal(dest);
+            await Task.CompletedTask;
         }
     }
 }

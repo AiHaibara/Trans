@@ -29,6 +29,6 @@ namespace Trans.Client.ViewModel
         public static ViewModelLocator Instance => new Lazy<ViewModelLocator>(() =>
            Application.Current.TryFindResource("Locator") as ViewModelLocator).Value;
         public MainViewModel Main => SimpleIoc.Default.GetInstance<MainViewModel>();
-        public MainViewModel Box => SimpleIoc.Default.GetInstance<MainViewModel>();
+        public AppSpriteViewModel Box => SimpleIoc.Default.GetInstance<AppSpriteViewModel>();
     }
 }

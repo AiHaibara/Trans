@@ -20,5 +20,10 @@ namespace Trans.Client.ViewModel
             }
 #endif
         }
+
+        public AppSpriteViewModel()
+        {
+
+        }
     }
 }
