@@ -18,6 +18,7 @@ namespace Trans.Client.ViewModel
             //var dataService = ServiceLocator.Current.GetInstance<DataService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<AppSpriteViewModel>();
             //SimpleIoc.Default.Register(() => new GrowlDemoViewModel(), "GrowlDemo");
             //SimpleIoc.Default.Register(() => new GrowlDemoViewModel(MessageToken.GrowlDemoPanel), "GrowlDemoWithToken");
             //SimpleIoc.Default.Register<IOcror, CustomTrans.Ocror>();
@@ -28,6 +29,6 @@ namespace Trans.Client.ViewModel
         public static ViewModelLocator Instance => new Lazy<ViewModelLocator>(() =>
            Application.Current.TryFindResource("Locator") as ViewModelLocator).Value;
         public MainViewModel Main => SimpleIoc.Default.GetInstance<MainViewModel>();
-
+        public MainViewModel Box => SimpleIoc.Default.GetInstance<MainViewModel>();
     }
 }

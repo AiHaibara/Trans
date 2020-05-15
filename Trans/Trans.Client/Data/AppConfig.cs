@@ -19,5 +19,6 @@ namespace Trans.Client.Data
         public List<LangData> Langs { get; set; }
 
         public bool IsAutoStartUp { get; set; }
+        public bool IsNearMouse { get; set; }
     }
 }

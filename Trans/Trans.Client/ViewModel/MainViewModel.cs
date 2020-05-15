@@ -162,6 +162,29 @@ namespace Trans.Client.ViewModel
 #endif
         }
 
+        private bool _isNearMouse = false;
+        public bool IsNearMouse
+        {
+            get => _isNearMouse;
+#if netle40
+            set => Set(nameof(IsNearMouse), ref _isNearMouse, value);
+#else 
+            set
+            {
+                GlobalData.Config.IsNearMouse = value;
+                GlobalData.Save();
+                Set(ref _isNearMouse, value);
+                if (!InitSetting)
+                {
+                    if (value)
+                        Growl.SuccessGlobal("Near Mouse is On");
+                    else
+                        Growl.SuccessGlobal("Near Mouse is Off");
+                }
+            }
+#endif
+        }
+
         public ITransContext TransContext { get; set; }
         public bool InitSetting { get; set; }
         public MainViewModel(ITransContext transContext)
@@ -171,20 +194,25 @@ namespace Trans.Client.ViewModel
             To = GlobalData.Config.TransConfig.To;
             Use = GlobalData.Config.TransConfig.Use;
             IsAutoStartup = GlobalData.Config.IsAutoStartUp;
+            IsNearMouse = GlobalData.Config.IsNearMouse;
             InitSetting = false;
         }
 
         public RelayCommand MouseCmd => new Lazy<RelayCommand>(() =>
-            new RelayCommand(() => Grow())).Value;
+            new RelayCommand(() => Trans())).Value;
 
         public RelayCommand GlobalShortcutInfoCmd => new Lazy<RelayCommand>(() =>
           new RelayCommand(() => Environment.Exit(0))).Value;
 
         public RelayCommand GlobalShortcutWarningCmd => new Lazy<RelayCommand>(() =>
-            new RelayCommand(() => Grow())).Value;
+            new RelayCommand(() => Trans())).Value;
 
         public RelayCommand GlobalShortcutSwitchCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(() => SwitchToLang())).Value;
+
+        public RelayCommand OpenCmd => new Lazy<RelayCommand>(() =>
+            new RelayCommand(() => Sprite.Show(new AppSprite()))).Value;
+
         public static bool isActive = false;
         public async Task SwitchToLang()
         {
@@ -194,13 +222,13 @@ namespace Trans.Client.ViewModel
             To = Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList()[index];
         }
 
-        public async Task Grow()
+        public async Task Trans()
         {
             if (isActive == true) return;
             isActive = true;
             //GlobalData.DpiScale = System.Windows.Media.VisualTreeHelper.GetDpi(MainWindow.Instance);
             //MainWindow.Cursor = Cliper.Instance;
-            CropWindow.ShowDialog();                                                                                         
+            CropWindow.ShowDialog();
             //var timer = new System.Diagnostics.Stopwatch();
 
             //timer.Start();
@@ -209,16 +237,32 @@ namespace Trans.Client.ViewModel
                 var src = TransContext.GetTrans().GetOcror().CropImage();
                 //timer.Stop();
                 //var ret = timer.ElapsedMilliseconds;
-                var dest =await TransContext.GetTrans().GetTranslator().Translate(src);
-                Growl.InfoGlobal(dest);
+                var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
+
+                if (IsNearMouse)
+                {
+                    var box = new AppSprite();
+                    Sprite.Show(box);
+                    //(box.DataContext as AppSpriteViewModel).Dest = dest;
+                }
+                else
+                {
+                    await Grow(dest);
+                }
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 var x = ex;
             }
             finally
             {
                 isActive = false;
             }
+        }
+
+        public async Task Grow(string dest)
+        {
+            Growl.InfoGlobal(dest);
         }
     }
 }

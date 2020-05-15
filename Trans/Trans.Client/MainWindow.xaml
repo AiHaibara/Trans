@@ -47,6 +47,8 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Margin="5 0 5 0">
                 <Label HorizontalAlignment="Center" MinWidth="60"  Background="Transparent" BorderBrush="Transparent" Foreground="White">Auto Startup :</Label>
                 <CheckBox IsChecked="{Binding IsAutoStartup,Mode=TwoWay}"></CheckBox>
+                <Label HorizontalAlignment="Center" MinWidth="60"  Background="Transparent" BorderBrush="Transparent" Foreground="White">Near Mouse:</Label>
+                <CheckBox IsChecked="{Binding IsNearMouse,Mode=TwoWay}"></CheckBox>
             </StackPanel>
         </StackPanel>
         <!--<Image Name='imageCapture' Stretch='UniformToFill'/>-->
