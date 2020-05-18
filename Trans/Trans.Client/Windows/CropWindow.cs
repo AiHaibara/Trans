@@ -102,7 +102,7 @@ namespace Trans.Client.Windows
                 source = null;
                 image.Source = null;
                 window.Close();
-                MainWindow.Instance.WindowState = WindowState.Normal;
+                //MainWindow.Instance.WindowState = WindowState.Normal;
             };
             window.Deactivated += (aa, bb) =>
             {

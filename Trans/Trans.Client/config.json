@@ -15,7 +15,8 @@
     "MicrosoftTranslateKEY": ""
   },
   "NotifyIconNotified": true,
-  "IsAutoStartup": true,
+  "IsAutoStartUp": true,
+  "IsNearMouse": true,
   "Langs": [
     {
       "type": "en",
@@ -62,7 +63,7 @@
     {
       "type": "zh_tw",
       "ocr": "zh-tw",
-      "trans": "zh-tw",
+      "trans": "cht",
       "name": "Baidu"
     },
     {

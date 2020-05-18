@@ -16,8 +16,8 @@ namespace Trans.Client.Windows
         {
             var transform = PresentationSource.FromVisual(window).CompositionTarget.TransformFromDevice;
             var mouse = transform.Transform(new Point(pt.X, pt.Y));
-            window.Left = mouse.X;
-            window.Top = mouse.Y;
+            window.Left = mouse.X-20;
+            window.Top = mouse.Y-20;
         }
         public static PopupWindow Show(object content, Point pt)
         {

@@ -211,10 +211,20 @@ namespace Trans.Client.ViewModel
         public RelayCommand GlobalShortcutSwitchCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(async() =>await SwitchToLang())).Value;
 
+        public RelayCommand NormalWindowMouseCmd => new Lazy<RelayCommand>(() =>
+            new RelayCommand(async () => await NormalWindow())).Value;
+
         //public RelayCommand OpenCmd => new Lazy<RelayCommand>(() =>
         //    new RelayCommand(() => Sprite.Show(new AppSprite()))).Value;
 
         public static bool isActive = false;
+
+        public async Task NormalWindow()
+        {
+            MainWindow.Instance.WindowState = WindowState.Normal;
+            await Task.CompletedTask;
+        }
+
         public async Task SwitchToLang()
         {
             var index=Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList().FindIndex(p=>p==To);
@@ -223,7 +233,7 @@ namespace Trans.Client.ViewModel
             To = Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList()[index];
             await Task.CompletedTask;
         }
-
+        public static PopupWindow Popup { get; set; }
         public async Task Trans()
         {
             if (isActive == true) return;
@@ -232,7 +242,8 @@ namespace Trans.Client.ViewModel
             //MainWindow.Cursor = Cliper.Instance;
             CropWindow.ShowDialog();
             //var timer = new System.Diagnostics.Stopwatch();
-
+            POINT pt;
+            InteropMethods.GetCursorPos(out pt);
             //timer.Start();
             try
             {
@@ -243,10 +254,13 @@ namespace Trans.Client.ViewModel
 
                 if (IsNearMouse)
                 {
+                    if (Popup != null)
+                    {
+                        Popup.Close();
+                    }
                     var box = new AppSprite(dest);
-                    POINT pt;
-                    InteropMethods.GetCursorPos(out pt);
-                    Windows.Sprite.Show(box,pt);
+                    Popup = Windows.Sprite.Show(box,pt);
+                    Popup.Topmost = true;
                     //(box.DataContext as AppSpriteViewModel).Dest = dest;
                 }
                 else

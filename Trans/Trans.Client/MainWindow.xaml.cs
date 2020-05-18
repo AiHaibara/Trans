@@ -35,6 +35,7 @@ namespace Trans.Client
         {
             GlobalData.Init();
             Instance = this;
+            WindowState = WindowState.Normal;
             InitializeComponent();
             ContentRendered += MainWindow_ContentRendered;
             if (GlobalData.Config.TransConfig.HotKey != null)
