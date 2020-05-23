@@ -45,8 +45,9 @@ namespace Trans.Client
                 {
                     Hot.Key = (Key)Key.Parse(typeof(Key), text);
                     var keyStr = Hot.Modifiers != ModifierKeys.None ? $"{Hot.Modifiers.ToString()} + {Hot.Key.ToString()}" : Hot.Key.ToString();
-                    (DataContext as MainViewModel).KeyText = keyStr;                       
-                    GlobalShortcut.Init(this);
+                    (DataContext as MainViewModel).KeyText = keyStr;
+                    var keybinds = GlobalShortcut.GetKeyBindings(this).ToList();
+                    GlobalShortcut.Init(keybinds);
                 }
                 else
                 {
@@ -54,7 +55,8 @@ namespace Trans.Client
                     Hot.Key = (Key)Key.Parse(typeof(Key), text.Split('+')[1].Trim());
                     var keyStr = Hot.Modifiers != ModifierKeys.None ? $"{Hot.Modifiers.ToString()} + {Hot.Key.ToString()}" : Hot.Key.ToString();
                     (DataContext as MainViewModel).KeyText = keyStr;
-                    GlobalShortcut.Init(this);
+                    var keybinds = GlobalShortcut.GetKeyBindings(this).ToList();
+                    GlobalShortcut.Init(keybinds);
                 }
             }
 
@@ -73,7 +75,7 @@ namespace Trans.Client
             System.Windows.Controls.Image image = (System.Windows.Controls.Image)sender;
             GlobalData.DpiScale = VisualTreeHelper.GetDpi(image);
             GlobalData.ScreenWidth = SystemParameters.PrimaryScreenWidth * GlobalData.DpiScale.DpiScaleX;
-            GlobalData.ScreenHeight = SystemParameters.PrimaryScreenHeight* GlobalData.DpiScale.DpiScaleY;
+            GlobalData.ScreenHeight = SystemParameters.PrimaryScreenHeight * GlobalData.DpiScale.DpiScaleY;
             image.DpiChanged += MainWindow_DpiChanged;
         }
 
@@ -127,7 +129,8 @@ namespace Trans.Client
             (DataContext as MainViewModel).KeyText = keyStr;
             //(DataContext as MainViewModel).ModifierKeys = modifierKeys;
             //(DataContext as MainViewModel).Key = key;
-            GlobalShortcut.Init(this);
+            var keybinds=GlobalShortcut.GetKeyBindings(this).ToList();
+            GlobalShortcut.Init(keybinds);
             GlobalData.Config.TransConfig.HotKey = (DataContext as MainViewModel).KeyText;
             GlobalData.Save();
             Growl.SuccessGlobal($"HotKey is {keyStr}");
