@@ -35,7 +35,7 @@ namespace Trans.Client
         {
             GlobalData.Init();
             Instance = this;
-            WindowState = WindowState.Normal;
+            //WindowState = WindowState.Normal;
             InitializeComponent();
             ContentRendered += MainWindow_ContentRendered;
             if (GlobalData.Config.TransConfig.HotKey != null)
@@ -79,10 +79,24 @@ namespace Trans.Client
             image.DpiChanged += MainWindow_DpiChanged;
         }
 
-        private void MainWindow_DpiChanged(object sender, RoutedEventArgs e)
+        private void MainWindow_DpiChanged(object sender, DpiChangedEventArgs e)
         {
             System.Windows.Controls.Image image = (System.Windows.Controls.Image)sender;
             GlobalData.DpiScale = VisualTreeHelper.GetDpi(image);
+
+            //Restart current process Method 2
+            if (e.OldDpi.PixelsPerDip != e.NewDpi.PixelsPerDip)
+            {
+                System.Reflection.Assembly.GetEntryAssembly();
+                string startpath = System.IO.Directory.GetCurrentDirectory();
+                System.Diagnostics.Process.Start(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName, " --autorun --restart");
+                Application.Current.Shutdown();
+            }
+            //Process p = new Process();
+            //p.StartInfo.FileName = System.AppDomain.CurrentDomain.BaseDirectory + "xxx.exe";
+            //p.StartInfo.UseShellExecute = false;
+            //p.Start();
+            //Application.Current.Shutdown();
         }
 
         public static MainWindow Instance { get; set; }

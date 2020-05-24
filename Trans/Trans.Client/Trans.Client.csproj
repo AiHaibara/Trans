@@ -7,6 +7,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <StartupObject />
     <XamlDebuggingInformation>True</XamlDebuggingInformation>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="app.manifest" />
     <None Remove="config.json" />
     <None Remove="Resources\cursor1.cur" />
     <None Remove="Resources\cursor1.ico" />

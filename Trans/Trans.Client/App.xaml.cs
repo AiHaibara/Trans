@@ -23,17 +23,22 @@ namespace Trans.Client
 #pragma warning restore IDE0052
         protected override void OnStartup(StartupEventArgs e)
         {
+            var isRestart = false;
             for (int i = 0; i != e.Args.Length; ++i)
             {
                 if (e.Args[i] == "--autorun")
                 {
                     Data.GlobalData.IsAutoRun = true;
                 }
+                if (e.Args[i] == "--restart")
+                {
+                    isRestart = true;
+                }
             }
 
             AppMutex = new Mutex(true, "Trans", out var createdNew);
 
-            if (!createdNew)
+            if (!isRestart && !createdNew)
             {
                 var current = Process.GetCurrentProcess();
 

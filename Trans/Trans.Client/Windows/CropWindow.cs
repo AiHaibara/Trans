@@ -32,8 +32,8 @@ namespace Trans.Client.Windows
         private static void Instance_StateChanged(object sender, EventArgs e)
         {
             Thread.Sleep(200);
-            if (MainWindow.Instance.WindowState != WindowState.Minimized)
-                return;
+            //if (MainWindow.Instance.WindowState != WindowState.Minimized)
+            //    return;
             if (flag == false)
                 return;
             flag = false;
