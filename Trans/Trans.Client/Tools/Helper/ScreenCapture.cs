@@ -68,29 +68,34 @@ namespace Trans.Client.Tools
 
         public static BitmapSource CopyScreen()
         {
-            using (var screenBmp = new Bitmap((int)(Data.GlobalData.ScreenWidth), (int)(Data.GlobalData.ScreenHeight), System.Drawing.Imaging.PixelFormat.Format64bppArgb))
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
-                IntPtr hbitmap = IntPtr.Zero;
-                try
+                float dpiX = 96 / graphics.DpiX;
+                float dpiY = 96 / graphics.DpiY;
+                using (var screenBmp = new Bitmap((int)graphics.VisibleClipBounds.Width, (int)graphics.VisibleClipBounds.Height, System.Drawing.Imaging.PixelFormat.Format64bppArgb))
                 {
-                    using (var bmpGraphics = Graphics.FromImage(screenBmp))
+                    IntPtr hbitmap = IntPtr.Zero;
+                    try
                     {
-                        bmpGraphics.CopyFromScreen(0, 0, 0, 0, screenBmp.Size);
-                        hbitmap = screenBmp.GetHbitmap();
-                        var bitmap = Imaging.CreateBitmapSourceFromHBitmap(
-                            hbitmap,
-                            IntPtr.Zero,
-                            Int32Rect.Empty,
-                            BitmapSizeOptions.FromEmptyOptions());
-                        bitmap?.Freeze();
-                        return bitmap;
+                        using (var bmpGraphics = Graphics.FromImage(screenBmp))
+                        {
+                            bmpGraphics.CopyFromScreen(0, 0, 0, 0, screenBmp.Size);
+                            hbitmap = screenBmp.GetHbitmap();
+                            var bitmap = Imaging.CreateBitmapSourceFromHBitmap(
+                                hbitmap,
+                                IntPtr.Zero,
+                                Int32Rect.Empty,
+                                BitmapSizeOptions.FromEmptyOptions());
+                            bitmap?.Freeze();
+                            return bitmap;
+                        }
                     }
-                }
-                finally
-                {
-                    if (hbitmap != IntPtr.Zero)
+                    finally
                     {
-                        DeleteObject(hbitmap);
+                        if (hbitmap != IntPtr.Zero)
+                        {
+                            DeleteObject(hbitmap);
+                        }
                     }
                 }
             }

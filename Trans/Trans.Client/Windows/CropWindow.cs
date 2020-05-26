@@ -58,7 +58,10 @@ namespace Trans.Client.Windows
                 float dpiX = 96/graphics.DpiX;
                 float dpiY = 96/graphics.DpiY;
                 Data.GlobalData.DpiScale = new DpiScale(Data.GlobalData.ScreenHeight/(graphics.VisibleClipBounds.Height * dpiY), Data.GlobalData.ScreenWidth/(graphics.VisibleClipBounds.Width*dpiX));
-                image = new System.Windows.Controls.Image() { Source = source, SnapsToDevicePixels = true, Height =graphics.VisibleClipBounds.Height*dpiY, Width=graphics.VisibleClipBounds.Width*dpiX };
+                //image = new System.Windows.Controls.Image() { Source = source, SnapsToDevicePixels = true, Height =graphics.VisibleClipBounds.Height*dpiY, Width=graphics.VisibleClipBounds.Width*dpiX };
+                image = new System.Windows.Controls.Image() { Source = source };
+                image.Width = SystemParameters.PrimaryScreenWidth;
+                image.Height = SystemParameters.PrimaryScreenHeight;
                 //RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
                 canvas.Children.Add(image);
             }
