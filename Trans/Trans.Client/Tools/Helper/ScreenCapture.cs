@@ -105,13 +105,18 @@ namespace Trans.Client.Tools
         {
             if (img == null)
                 throw new ArgumentNullException("img");
-            Console.WriteLine(rect);
-            var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X * Data.GlobalData.DpiScale.DpiScaleX), (int)(rect.Y * Data.GlobalData.DpiScale.DpiScaleY), Math.Max(1, (int)(rect.Width * Data.GlobalData.DpiScale.DpiScaleX)), Math.Max(1, (int)(rect.Height * Data.GlobalData.DpiScale.DpiScaleY))));
-            using (var fileStream = new FileStream(PathHelper.FullPath(GlobalData.SourcePath), FileMode.Create))
+            using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
-                BitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(crop));
-                encoder.Save(fileStream);
+                float dpiX = 96 / graphics.DpiX;
+                float dpiY = 96 / graphics.DpiY;
+                var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X/dpiX), (int)(rect.Y/dpiY), (int)(rect.Width/dpiX), (int)(rect.Height/dpiY)));
+                //var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X * Data.GlobalData.DpiScale.DpiScaleX), (int)(rect.Y * Data.GlobalData.DpiScale.DpiScaleY), Math.Max(1, (int)(rect.Width * Data.GlobalData.DpiScale.DpiScaleX)), Math.Max(1, (int)(rect.Height * Data.GlobalData.DpiScale.DpiScaleY))));
+                using (var fileStream = new FileStream(PathHelper.FullPath(GlobalData.SourcePath), FileMode.Create))
+                {
+                    BitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(crop));
+                    encoder.Save(fileStream);
+                }
             }
         }
     }
