@@ -109,7 +109,7 @@ namespace Trans.Client.Tools
             {
                 float dpiX = 96 / graphics.DpiX;
                 float dpiY = 96 / graphics.DpiY;
-                var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X/dpiX), (int)(rect.Y/dpiY), (int)(rect.Width/dpiX), (int)(rect.Height/dpiY)));
+                var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X/dpiX), (int)(rect.Y/dpiY), Math.Max(1, (int)(rect.Width/dpiX)), Math.Max(1, (int)(rect.Height/dpiY))));
                 //var crop = new CroppedBitmap(img, new Int32Rect((int)(rect.X * Data.GlobalData.DpiScale.DpiScaleX), (int)(rect.Y * Data.GlobalData.DpiScale.DpiScaleY), Math.Max(1, (int)(rect.Width * Data.GlobalData.DpiScale.DpiScaleX)), Math.Max(1, (int)(rect.Height * Data.GlobalData.DpiScale.DpiScaleY))));
                 using (var fileStream = new FileStream(PathHelper.FullPath(GlobalData.SourcePath), FileMode.Create))
                 {
