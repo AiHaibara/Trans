@@ -70,7 +70,9 @@
                     <hc:EventToCommand Command="{Binding NormalWindowMouseCmd}"/>
                 </hc:EventTrigger>
                 <hc:EventTrigger EventName="Click">
-                    <hc:EventToCommand Command="{Binding MouseCmd}"/>
+                    <hc:EventToCommand Command="hc:ControlCommands.PushMainWindow2Top"/>
+                    <hc:EventToCommand Command="{Binding NormalWindowMouseCmd}"/>
+                    <!--<hc:EventToCommand Command="{Binding MouseCmd}"/>-->
                 </hc:EventTrigger>
             </hc:Interaction.Triggers>
         </hc:NotifyIcon>
