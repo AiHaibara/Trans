@@ -15,6 +15,7 @@
         hc:NonClientAreaBackground="#333333"
         hc:Dialog.Token="{x:Static data:MessageToken.MainWindow}"
         Title="Trans Tips Alt+Esc exit" Height="400" Width="700"
+        ResizeMode="NoResize"
         Icon="/Trans.Client;component/Resources/Img/icon.ico">
     <hc:GlobalShortcut.KeyBindings>                                                                                                                                                                                                                    
         <KeyBinding Modifiers="Alt" Key="Esc" Command="{Binding Main.GlobalShortcutInfoCmd, Source={StaticResource Locator}}"/>
