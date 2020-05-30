@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using Trans.Client.Tools.Helper;
 
@@ -29,6 +30,9 @@ namespace Trans.Client.Windows
             {
                 MoveBottomRightEdgeOfWindowToMousePosition(window, pt);
             };
+
+            window.ShowActivated = false;
+            window.Topmost = true;
             window.Show(content as FrameworkElement, false);
 
             return window;

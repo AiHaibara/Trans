@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight.Command;
 using Trans.Client.Data;
 using Microsoft.Win32;
 using Trans.Client.Tools.Helper;
+using System.Windows.Interop;
 
 namespace Trans.Client.ViewModel
 {
@@ -240,43 +241,51 @@ namespace Trans.Client.ViewModel
             isActive = true;
             //GlobalData.DpiScale = System.Windows.Media.VisualTreeHelper.GetDpi(MainWindow.Instance);
             //MainWindow.Cursor = Cliper.Instance;
-            CropWindow.ShowDialog();
-            //var timer = new System.Diagnostics.Stopwatch();
-            POINT pt;
-            InteropMethods.GetCursorPos(out pt);
-            //timer.Start();
-            try
+            CropWindow.Do = async () =>
             {
-                var src = TransContext.GetTrans().GetOcror().CropImage();
-                //timer.Stop();
-                //var ret = timer.ElapsedMilliseconds;
-                var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
+                POINT pt;
+                InteropMethods.GetCursorPos(out pt);
+                //timer.Start();
+                try
+                {
+                    var src = TransContext.GetTrans().GetOcror().CropImage();
+                    //timer.Stop();
+                    //var ret = timer.ElapsedMilliseconds;
+                    var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
 
-                if (IsNearMouse)
-                {
-                    if (Popup != null)
+                    if (IsNearMouse)
                     {
-                        Popup.Close();
+                        if (Popup != null)
+                        {
+                            Popup.Close();
+                        }
+                        var box = new AppSprite(dest);
+                        Popup = Windows.Sprite.Show(box, pt);
+
+                        var handle = new WindowInteropHelper(Popup).Handle;
+                        int exstyle = (int)InteropMethods.GetWindowLong(handle, InteropMethods.GWL_EXSTYLE);
+                        InteropMethods.SetWindowLong(handle, InteropMethods.GWL_EXSTYLE, (IntPtr)(exstyle | ((int)InteropMethods.WS_EX_NOACTIVATE | ((int)InteropMethods.WS_EX_TOOLWINDOW))));
+                        //InteropMethods.SetForegroundWindow(current);
+                        //(box.DataContext as AppSpriteViewModel).Dest = dest;
                     }
-                    var box = new AppSprite(dest);
-                    Popup = Windows.Sprite.Show(box,pt);
-                    Popup.Topmost = true;
-                    //(box.DataContext as AppSpriteViewModel).Dest = dest;
+                    else
+                    {
+                        await Grow(dest);
+                    }
+                    Clipboard.SetText(dest);
                 }
-                else
+                catch (Exception ex)
                 {
-                    await Grow(dest);
+                    var x = ex;
                 }
-                Clipboard.SetText(dest);
-            }
-            catch (Exception ex)
-            {
-                var x = ex;
-            }
-            finally
-            {
-                isActive = false;
-            }
+                finally
+                {
+                    isActive = false;
+                }
+            };
+            CropWindow.Show();
+            //var timer = new System.Diagnostics.Stopwatch();
+            
         }
 
         public async Task Grow(string dest)
