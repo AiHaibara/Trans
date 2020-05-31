@@ -234,7 +234,6 @@ namespace Trans.Client.ViewModel
             To = Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList()[index];
             await Task.CompletedTask;
         }
-        public static PopupWindow Popup { get; set; }
         public async Task Trans()
         {
             if (isActive == true) return;
@@ -255,14 +254,15 @@ namespace Trans.Client.ViewModel
 
                     if (IsNearMouse)
                     {
-                        if (Popup != null)
-                        {
-                            Popup.Close();
-                        }
+                        //if (Windows.Sprite.Popup != null)
+                        //{
+                        //    Windows.Sprite.Popup.Hide();
+                        //    //Popup.Close();
+                        //}
                         var box = new AppSprite(dest);
-                        Popup = Windows.Sprite.Show(box, pt);
+                        Windows.Sprite.Popup = Windows.Sprite.Show(box, pt);
 
-                        var handle = new WindowInteropHelper(Popup).Handle;
+                        var handle = new WindowInteropHelper(Windows.Sprite.Popup).Handle;
                         int exstyle = (int)InteropMethods.GetWindowLong(handle, InteropMethods.GWL_EXSTYLE);
                         InteropMethods.SetWindowLong(handle, InteropMethods.GWL_EXSTYLE, (IntPtr)(exstyle | ((int)InteropMethods.WS_EX_NOACTIVATE | ((int)InteropMethods.WS_EX_TOOLWINDOW))));
                         //InteropMethods.SetForegroundWindow(current);

@@ -14,8 +14,8 @@ namespace Trans.Client.Windows
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             e.Handled = true;
-            
-            Window.GetWindow(this).Close();
+            Window.GetWindow(this).Visibility = Visibility.Hidden;
+            //Window.GetWindow(this).Close();
 
         }
     }
