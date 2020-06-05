@@ -1,4 +1,5 @@
-﻿using Trans.Client.ViewModel;
+﻿using System.Windows;
+using Trans.Client.ViewModel;
 
 namespace Trans.Client.Windows
 {
@@ -8,6 +9,14 @@ namespace Trans.Client.Windows
         {
             InitializeComponent();
             (DataContext as AppSpriteViewModel).Dest = dest;
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            e.Handled = true;
+            Window.GetWindow(this).Visibility = Visibility.Hidden;
+            //Window.GetWindow(this).Close();
+
         }
     }
 }

@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight.Command;
 using Trans.Client.Data;
 using Microsoft.Win32;
 using Trans.Client.Tools.Helper;
+using System.Windows.Interop;
 
 namespace Trans.Client.ViewModel
 {
@@ -274,51 +275,58 @@ namespace Trans.Client.ViewModel
             isActive = true;
             //GlobalData.DpiScale = System.Windows.Media.VisualTreeHelper.GetDpi(MainWindow.Instance);
             //MainWindow.Cursor = Cliper.Instance;
-            CropWindow.ShowDialog();
-            //var timer = new System.Diagnostics.Stopwatch();
-            POINT pt;
-            InteropMethods.GetCursorPos(out pt);
-            //timer.Start();
-            try
+            CropWindow.Do = async () =>
             {
-                var src = TransContext.GetTrans().GetOcror().CropImage();
-                //timer.Stop();
-                //var ret = timer.ElapsedMilliseconds;
-                var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
-                if (IsOpenSearch)
+                try
                 {
-                    System.Diagnostics.Process process = new System.Diagnostics.Process();
-                    process.StartInfo.FileName = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
-                    process.StartInfo.Arguments = "google.com/search?q=" + System.Web.HttpUtility.UrlEncode(dest) + " --new-window";
-                    process.Start();
-                }
-                if (IsNearMouse)
-                {
-                    if (Popup != null)
+                    var src = TransContext.GetTrans().GetOcror().CropImage();
+                    //timer.Stop();
+                    //var ret = timer.ElapsedMilliseconds;
+                    var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
+                    if (IsOpenSearch)
                     {
-                        Popup.Close();
+                        System.Diagnostics.Process process = new System.Diagnostics.Process();
+                        process.StartInfo.FileName = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+                        process.StartInfo.Arguments = "google.com/search?q=" + System.Web.HttpUtility.UrlEncode(dest) + " --new-window";
+                        process.Start();
                     }
-                    var box = new AppSprite(dest);
-                    Popup = Windows.Sprite.Show(box,pt);
-                    Popup.Topmost = true;
-                    //(box.DataContext as AppSpriteViewModel).Dest = dest;
+                    if (IsNearMouse)
+                    {
+                        POINT pt;
+                        InteropMethods.GetCursorPos(out pt);
+                        //if (Windows.Sprite.Popup != null)
+                        //{
+                        //    Windows.Sprite.Popup.Hide();
+                        //    //Popup.Close();
+                        //}
+                        var box = new AppSprite(dest);
+                        Windows.Sprite.Popup = Windows.Sprite.Show(box, pt);
+
+                        var handle = new WindowInteropHelper(Windows.Sprite.Popup).Handle;
+                        int exstyle = (int)InteropMethods.GetWindowLong(handle, InteropMethods.GWL_EXSTYLE);
+                        InteropMethods.SetWindowLong(handle, InteropMethods.GWL_EXSTYLE, (IntPtr)(exstyle | ((int)InteropMethods.WS_EX_NOACTIVATE | ((int)InteropMethods.WS_EX_TOOLWINDOW))));
+                        //InteropMethods.SetForegroundWindow(current);
+                        //(box.DataContext as AppSpriteViewModel).Dest = dest;
+                    }
+                    else
+                    {
+                        await Grow(dest);
+                    }
+                    Clipboard.SetText(dest);
                 }
-                else
+                catch (Exception ex)
                 {
-                    await Grow(dest);
+                    var x = ex;
                 }
-                Clipboard.SetText(dest);
+                finally
+                {
+                    isActive = false;
+                }
                 //System.Diagnostics.Process.Start("microsoft-edge:http://www.google.com");
                 //System.Diagnostics.Process.Start("chrome", "http://www.google.com");
-            }
-            catch (Exception ex)
-            {
-                var x = ex;
-            }
-            finally
-            {
-                isActive = false;
-            }
+            };
+            CropWindow.Show();
+            //var timer = new System.Diagnostics.Stopwatch();
         }
 
         public async Task Grow(string dest)

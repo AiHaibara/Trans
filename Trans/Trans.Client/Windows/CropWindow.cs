@@ -14,22 +14,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Trans.Client.Tools;
+using Trans.Client.Tools.Helper;
 
 namespace Trans.Client.Windows
 {
     public class CropWindow
     {
-        public static void ShowDialog()
+        public static Action Do { get; set; }
+        public static void Show()
         {
 
             flag = true;
             //MainWindow.Instance.Deactivated -= Instance_StateChanged;
             //MainWindow.Instance.Deactivated += Instance_StateChanged;
             MainWindow.Instance.WindowState = WindowState.Minimized;
-            Instance_StateChanged(null, null);
+            Show(null, null);
         }
         public static bool flag = false;
-        private static void Instance_StateChanged(object sender, EventArgs e)
+        private static void Show(object sender, EventArgs e)
         {
             Thread.Sleep(200);
             //if (MainWindow.Instance.WindowState != WindowState.Minimized)
@@ -42,7 +44,7 @@ namespace Trans.Client.Windows
             window.Cursor = Cliper.Instance;
             window.ResizeMode = ResizeMode.NoResize;
             window.WindowStyle = WindowStyle.None;
-            window.WindowState = WindowState.Maximized;
+            //window.WindowState = WindowState.Maximized;
             var canvas = new Canvas();
             canvas.Background = new SolidColorBrush(Colors.Transparent);
             System.Windows.Shapes.Path path = new System.Windows.Shapes.Path();
@@ -53,6 +55,10 @@ namespace Trans.Client.Windows
             //var scale=getScalingFactor();
             BitmapSource source = ScreenCapture.CopyScreen();
             System.Windows.Controls.Image image = null;
+            window.Width = SystemParameters.PrimaryScreenWidth;
+            window.Height = SystemParameters.PrimaryScreenHeight;
+            window.Left = 0;
+            window.Top = 0;
             using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
                 float dpiX = 96/graphics.DpiX;
@@ -71,6 +77,7 @@ namespace Trans.Client.Windows
             System.Windows.Point? end = null;
             window.MouseDown += (s, e) =>
             {
+                e.Handled = true;
                 window.CaptureMouse();
                 start = e.GetPosition(window);
                 //start = new System.Windows.Point(Math.Max(0d, start.Value.X),Math.Max(0d, start.Value.Y));
@@ -79,6 +86,7 @@ namespace Trans.Client.Windows
             };
             window.MouseMove += (ss, ee) =>
             {
+                ee.Handled = true;
                 if (start.HasValue)
                 {
                     end = ee.GetPosition(window);
@@ -95,28 +103,41 @@ namespace Trans.Client.Windows
             };
             window.MouseUp += (sss, eee) =>
             {
+                eee.Handled = true;
                 window.ReleaseMouseCapture();
                 if (start.HasValue && end.HasValue)
                 {
                     ScreenCapture.SaveImage(source, new Int32Rect(start.Value.X < end.Value.X ? (int)start.Value.X : (int)end.Value.X,
                         start.Value.Y < end.Value.Y ? (int)start.Value.Y:(int)end.Value.Y,
                         (int)rectangle.Rect.Width, (int)rectangle.Rect.Height));
+                    window.Cursor = Cursors.Arrow;
                 }
+                
+                //InteropMethods.SetForegroundWindow(current);
+
                 source = null;
                 image.Source = null;
                 window.Close();
+                Do();
                 //MainWindow.Instance.WindowState = WindowState.Normal;
             };
-            window.Deactivated += (aa, bb) =>
-            {
-                Window window = (Window)aa;
-                window.Topmost = true;
-            };
-            window.Activate();
+            //window.Deactivated += (aa, bb) =>
+            //{
+            //    Window window = (Window)aa;
+            //    window.Topmost = true;
+            //};
+            //window.ShowActivated = false;
+            //var current = InteropMethods.GetForegroundWindow();
+            window.ShowActivated = false;
             window.Topmost = true;
-            window.ShowDialog();
+            window.Show();
+            var handle = new WindowInteropHelper(window).Handle;
+            int exstyle = (int)InteropMethods.GetWindowLong(handle, InteropMethods.GWL_EXSTYLE);
+            InteropMethods.SetWindowLong(handle, InteropMethods.GWL_EXSTYLE, (IntPtr)(exstyle | ((int)InteropMethods.WS_EX_NOACTIVATE | ((int)InteropMethods.WS_EX_TOOLWINDOW))));
+            //InteropMethods.SetForegroundWindow(current);
+            //InteropMethods.ShowWindow(current, 9);
+            //InteropMethods.SetWindowPos(current, 0, 0, 0, 0, 0, InteropMethods.SWP_NOZORDER | InteropMethods.SWP_NOSIZE | InteropMethods.SWP_SHOWWINDOW);
         }
-
         public enum ImageFormats
         {
             PNG,
