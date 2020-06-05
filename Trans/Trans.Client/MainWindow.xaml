@@ -20,6 +20,7 @@
     <hc:GlobalShortcut.KeyBindings>                                                                                                                                                                                                                    
         <KeyBinding Modifiers="Alt" Key="Esc" Command="{Binding Main.GlobalShortcutInfoCmd, Source={StaticResource Locator}}"/>
         <KeyBinding Modifiers="{Binding ModifierKeys,Mode=TwoWay}" Key="{Binding Key,Mode=TwoWay}" x:Name="Hot" Command="{Binding Main.GlobalShortcutWarningCmd, Source={StaticResource Locator}}"/>
+        <KeyBinding Modifiers="Alt" Key="D2" Command="{Binding Main.GlobalShortcutSearchCmd, Source={StaticResource Locator}}"/>
         <KeyBinding Modifiers="Alt" Key="D1" Command="{Binding Main.GlobalShortcutSwitchCmd, Source={StaticResource Locator}}"/>
     </hc:GlobalShortcut.KeyBindings>
    <!--<hc:Window.NonClientAreaContent>
@@ -50,6 +51,8 @@
                 <CheckBox IsChecked="{Binding IsAutoStartup,Mode=TwoWay}"></CheckBox>
                 <Label HorizontalAlignment="Center" MinWidth="60"  Background="Transparent" BorderBrush="Transparent" Foreground="White">Near Mouse:</Label>
                 <CheckBox IsChecked="{Binding IsNearMouse,Mode=TwoWay}"></CheckBox>
+                <Label HorizontalAlignment="Center" MinWidth="60"  Background="Transparent" BorderBrush="Transparent" Foreground="White">Search:</Label>
+                <CheckBox IsChecked="{Binding IsOpenSearch,Mode=TwoWay}"></CheckBox>
             </StackPanel>
         </StackPanel>
         <!--<Image Name='imageCapture' Stretch='UniformToFill'/>-->

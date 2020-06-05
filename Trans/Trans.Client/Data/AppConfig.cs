@@ -20,5 +20,6 @@ namespace Trans.Client.Data
 
         public bool IsAutoStartUp { get; set; }
         public bool IsNearMouse { get; set; }
+        public bool IsOpenSearch { get; set; }
     }
 }

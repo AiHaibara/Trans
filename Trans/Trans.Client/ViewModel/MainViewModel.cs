@@ -186,6 +186,29 @@ namespace Trans.Client.ViewModel
 #endif
         }
 
+        private bool _isOpenSearch = false;
+        public bool IsOpenSearch
+        {
+            get => _isOpenSearch;
+#if netle40
+            set => Set(nameof(IsOpenSearch), ref _isOpenSearch, value);
+#else 
+            set
+            {
+                GlobalData.Config.IsOpenSearch = value;
+                GlobalData.Save();
+                Set(ref _isOpenSearch, value);
+                if (!InitSetting)
+                {
+                    if (value)
+                        Growl.SuccessGlobal("Search is On");
+                    else
+                        Growl.SuccessGlobal("Search is Off");
+                }
+            }
+#endif
+        }
+
         public ITransContext TransContext { get; set; }
         public bool InitSetting { get; set; }
         public MainViewModel(ITransContext transContext)
@@ -196,6 +219,7 @@ namespace Trans.Client.ViewModel
             Use = GlobalData.Config.TransConfig.Use;
             IsAutoStartup = GlobalData.Config.IsAutoStartUp;
             IsNearMouse = GlobalData.Config.IsNearMouse;
+            IsOpenSearch = GlobalData.Config.IsOpenSearch;
             InitSetting = false;
         }
 
@@ -213,6 +237,9 @@ namespace Trans.Client.ViewModel
 
         public RelayCommand NormalWindowMouseCmd => new Lazy<RelayCommand>(() =>
             new RelayCommand(async () => await NormalWindow())).Value;
+
+        public RelayCommand GlobalShortcutSearchCmd => new Lazy<RelayCommand>(() =>
+            new RelayCommand(async () => await SwitchOpenSearch())).Value;
 
         //public RelayCommand OpenCmd => new Lazy<RelayCommand>(() =>
         //    new RelayCommand(() => Sprite.Show(new AppSprite()))).Value;
@@ -233,6 +260,13 @@ namespace Trans.Client.ViewModel
             To = Enum.GetValues(typeof(LangType)).Cast<LangType>().ToList()[index];
             await Task.CompletedTask;
         }
+
+        public async Task SwitchOpenSearch()
+        {
+            IsOpenSearch = !IsOpenSearch;
+            await Task.CompletedTask;
+        }
+
         public static PopupWindow Popup { get; set; }
         public async Task Trans()
         {
@@ -251,7 +285,13 @@ namespace Trans.Client.ViewModel
                 //timer.Stop();
                 //var ret = timer.ElapsedMilliseconds;
                 var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
-
+                if (IsOpenSearch)
+                {
+                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                    process.StartInfo.FileName = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+                    process.StartInfo.Arguments = "google.com/search?q=" + System.Web.HttpUtility.UrlEncode(dest) + " --new-window";
+                    process.Start();
+                }
                 if (IsNearMouse)
                 {
                     if (Popup != null)
@@ -268,6 +308,8 @@ namespace Trans.Client.ViewModel
                     await Grow(dest);
                 }
                 Clipboard.SetText(dest);
+                //System.Diagnostics.Process.Start("microsoft-edge:http://www.google.com");
+                //System.Diagnostics.Process.Start("chrome", "http://www.google.com");
             }
             catch (Exception ex)
             {
