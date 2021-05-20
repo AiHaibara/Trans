@@ -20,7 +20,7 @@ namespace Trans.Client.Windows
 {
     public class CropWindow
     {
-        public static Action Do { get; set; }
+        public static Action<double> Do { get; set; }
         public static void Show()
         {
 
@@ -118,7 +118,7 @@ namespace Trans.Client.Windows
                 source = null;
                 image.Source = null;
                 window.Close();
-                Do();
+                Do(rectangle.Rect.Width);
                 //MainWindow.Instance.WindowState = WindowState.Normal;
             };
             //window.Deactivated += (aa, bb) =>

@@ -1,3 +1,4 @@
+from auth import api_key
 from flask import Flask
 from flask import Blueprint
 from flask import request
@@ -11,10 +12,36 @@ import os
 import dl_translate as dlt
 
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = '_5#y2LF4Q8z]/'
 mt=dlt.TranslationModel()
 lang_code_map=mt.get_lang_code_map()
 code_lang_map = {v: k for k, v in lang_code_map.items()}
+
+from functools import wraps
+from flask import g, request, jsonify, redirect, url_for
+def api_key(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+
+        token = None
+
+        if 'x-api-key' in request.headers:
+            token = request.headers['x-api-key']
+
+        if not token:
+            return jsonify({'message': 'a valid token is missing'})
+
+        try:
+            valid=token==app.secret_key
+            if not valid:
+                return jsonify({'message': 'token is invalid'})
+        #  data = jwt.decode(token, app.config[SECRET_KEY])
+        #  current_user = Users.query.filter_by(public_id=data['public_id']).first()
+        except:
+            return jsonify({'message': 'token is invalid'})
+
+        return f(*args, **kwargs)
+    return decorator
 
 @app.route("/")
 def hello():
@@ -36,6 +63,7 @@ def ocr():
     return ret
 
 @app.route("/trans", methods=['GET', 'POST'])
+@api_key
 def trans():
     input=request.args.get('input', '')
     print('a')

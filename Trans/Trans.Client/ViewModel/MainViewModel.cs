@@ -275,7 +275,7 @@ namespace Trans.Client.ViewModel
             isActive = true;
             //GlobalData.DpiScale = System.Windows.Media.VisualTreeHelper.GetDpi(MainWindow.Instance);
             //MainWindow.Cursor = Cliper.Instance;
-            CropWindow.Do = async () =>
+            CropWindow.Do = async (width) =>
             {
                 try
                 {
@@ -309,8 +309,8 @@ namespace Trans.Client.ViewModel
                         //    Windows.Sprite.Popup.Hide();
                         //    //Popup.Close();
                         //}
-                        var box = new AppSprite(dest);
-                        Windows.Sprite.Popup = Windows.Sprite.Show(box, pt);
+                        var box = new AppSprite(dest, width);
+                        Windows.Sprite.Popup = Windows.Sprite.Show(box, pt, width);
 
                         var handle = new WindowInteropHelper(Windows.Sprite.Popup).Handle;
                         int exstyle = (int)InteropMethods.GetWindowLong(handle, InteropMethods.GWL_EXSTYLE);

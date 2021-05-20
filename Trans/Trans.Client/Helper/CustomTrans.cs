@@ -219,11 +219,12 @@ namespace Trans.Client.Helper
             public async Task<string> Translate()
             {
                 string token = AccessToken.TOKEN;
-                string host = $"{}/i2t?to={HttpUtility.UrlEncode(to)}";
+                string host = $"{GlobalData.Config.TransConfig.CustomUri}/i2t?to={HttpUtility.UrlEncode(to)}";
                 Encoding encoding = Encoding.Default;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host);
                 request.Method = "post";
                 request.KeepAlive = true;
+                request.Headers.Add("x-api-key", GlobalData.Config.TransConfig.CustomKey);
                 // 图片的base64编码
                 string base64 = PathHelper.GetFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
                 //String str = HttpUtility.UrlEncode(base64);

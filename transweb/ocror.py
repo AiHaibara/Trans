@@ -9,6 +9,7 @@ import numpy as np
 from cv2 import cv2
 # import urllib.parse
 # import hashlib
+pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 def img_estim(img, thrshld):
     is_light = np.mean(img) > thrshld

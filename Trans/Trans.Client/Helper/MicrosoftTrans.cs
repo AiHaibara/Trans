@@ -135,7 +135,7 @@ namespace Trans.Client.Helper
                 request.Method = "post";
                 request.KeepAlive = true;
                 // 图片的base64编码
-                string base64 = getFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
+                string base64 = PathHelper.GetFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
                 String str = "image=" + HttpUtility.UrlEncode(base64);
                 byte[] buffer = encoding.GetBytes(str);
                 request.ContentLength = buffer.Length;
@@ -163,16 +163,6 @@ namespace Trans.Client.Helper
                 if (data == null || data.words_result == null)
                     return new MyResult { text = "None", language = "auto" };
                 return new MyResult { text = string.Join(';', data.words_result?.Select(p => p.words)), language = "auto" };
-            }
-
-            public static String getFileBase64(String fileName)
-            {
-                FileStream filestream = new FileStream(fileName, FileMode.Open);
-                byte[] arr = new byte[filestream.Length];
-                filestream.Read(arr, 0, (int)filestream.Length);
-                string baser64 = Convert.ToBase64String(arr);
-                filestream.Close();
-                return baser64;
             }
         }
 
