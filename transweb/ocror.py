@@ -68,11 +68,10 @@ def recognition(data):
     # cv2.imwrite('save_path', img)
     image=Image.fromarray(img)
 
-    content = pytesseract.image_to_string(image)   # 解析图片
+    content = pytesseract.image_to_string(image,'eng+chi_sim+jpn+chi_tra')   # 解析图片
     image = image.convert('RGB')
 
     image.save("src.jpg", "JPEG")
-    print(content)
     return content
 
 def recognitionbyfile():

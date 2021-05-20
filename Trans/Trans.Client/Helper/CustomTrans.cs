@@ -93,13 +93,13 @@ namespace Trans.Client.Helper
             public MyResult CropImage()
             {
                 string token = AccessToken.TOKEN;
-                string host = "http://127.0.0.1:5000/ocr";
+                string host = "http://127.0.0.1:5500/ocr";
                 Encoding encoding = Encoding.Default;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host);
                 request.Method = "post";
                 request.KeepAlive = true;
                 // 图片的base64编码
-                string base64 = getFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
+                string base64 = PathHelper.GetFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
                 //String str = HttpUtility.UrlEncode(base64);
                 String str = base64;
                 byte[] buffer = encoding.GetBytes(str);
@@ -118,16 +118,6 @@ namespace Trans.Client.Helper
                 //if (data == null|| data.words_result==null)
                 //    return "None";
                 //return string.Join(';', data.words_result?.Select(p => p.words));
-            }
-
-            public static String getFileBase64(String fileName)
-            {
-                FileStream filestream = new FileStream(fileName, FileMode.Open);
-                byte[] arr = new byte[filestream.Length];
-                filestream.Read(arr, 0, (int)filestream.Length);
-                string baser64 = Convert.ToBase64String(arr);
-                filestream.Close();
-                return baser64;
             }
         }
 
@@ -175,8 +165,9 @@ namespace Trans.Client.Helper
                 // 改成您的密钥
                 string secretKey = clientSecret;
                 string sign = EncryptString(appId + q + salt + secretKey);
-                string url = "http://127.0.0.1:5000/trans?";
-                url += "input=" + HttpUtility.UrlEncode(q);
+                string url = "http://127.0.0.1:5500/trans?";
+                url += "input=" + HttpUtility.UrlEncode(q)
+                    + "&to=" + HttpUtility.UrlEncode(to);
                 Console.WriteLine(url);
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
                 //request.ContentType = "text/html;charset=UTF-8";
@@ -223,6 +214,31 @@ namespace Trans.Client.Helper
             public void setTo(string to)
             {
                 this.to = to;
+            }
+
+            public async Task<string> Translate()
+            {
+                string token = AccessToken.TOKEN;
+                string host = $"{}/i2t?to={HttpUtility.UrlEncode(to)}";
+                Encoding encoding = Encoding.Default;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(host);
+                request.Method = "post";
+                request.KeepAlive = true;
+                // 图片的base64编码
+                string base64 = PathHelper.GetFileBase64(PathHelper.FullPath(GlobalData.SourcePath));
+                //String str = HttpUtility.UrlEncode(base64);
+                String str = base64;
+                byte[] buffer = encoding.GetBytes(str);
+                request.ContentLength = buffer.Length;
+                request.GetRequestStream().Write(buffer, 0, buffer.Length);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default);
+                string result = reader.ReadToEnd();
+                Console.WriteLine(result);
+                return result;
+                //if (data == null|| data.words_result==null)
+                //    return "None";
+                //return string.Join(';', data.words_result?.Select(p => p.words));
             }
         }
     }

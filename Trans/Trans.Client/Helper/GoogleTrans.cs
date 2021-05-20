@@ -190,6 +190,11 @@ namespace Trans.Client.Helper
             {
                 this.to = to;
             }
+
+            public Task<string> Translate()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

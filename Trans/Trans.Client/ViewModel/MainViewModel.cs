@@ -279,10 +279,20 @@ namespace Trans.Client.ViewModel
             {
                 try
                 {
-                    var src = TransContext.GetTrans().GetOcror().CropImage();
-                    //timer.Stop();
-                    //var ret = timer.ElapsedMilliseconds;
-                    var dest = await TransContext.GetTrans().GetTranslator().Translate(src);
+                    var trans=TransContext.GetTrans();
+                    string dest = null;
+                    if (trans is CustomTrans) {
+                        //timer.Stop();
+                        //var ret = timer.ElapsedMilliseconds;
+                        dest = await trans.GetTranslator().Translate();
+                    }
+                    else
+                    {
+                        var src = trans.GetOcror().CropImage();
+                        //timer.Stop();
+                        //var ret = timer.ElapsedMilliseconds;
+                        dest = await trans.GetTranslator().Translate(src);
+                    }
                     if (IsOpenSearch)
                     {
                         System.Diagnostics.Process process = new System.Diagnostics.Process();

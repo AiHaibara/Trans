@@ -8,6 +8,7 @@ namespace Trans.Client.Helper
 {
     public interface ITranslator
     {
+        public Task<string> Translate();
         public Task<string> Translate(MyResult src);
         public void setTo(string to);
     }

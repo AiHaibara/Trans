@@ -1,5 +1,5 @@
 import sys
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 tf.disable_v2_behavior()
 # from tensor2tensor.bin import t2t_decoder
 import decoder as t2t_decoder
@@ -61,6 +61,6 @@ def translate(input):
 def main(argv):
     print(translate("can you speak english?"))
 
-# if __name__ == "__main__":
-#     tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-#     tf.app.run()
+if __name__ == "__main__":
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+    tf.app.run()

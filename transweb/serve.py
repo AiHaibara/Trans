@@ -1,4 +1,4 @@
-from startweb import app
+from app import app
 from livereload import Server
 
 app.debug=True

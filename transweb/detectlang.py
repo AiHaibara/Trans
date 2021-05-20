@@ -9,9 +9,13 @@ def detectlanguage(text):
         # print(detect_langs(text))
         # print(detect(text))
         res = detect_langs(text)
+        print('detect')
+        print(res)
         for item in res:
             if item.lang in ['en','zh','ja','zh-cn','zh-tw']:
                 return item.lang
+            if item.lang in ['zh-CN','zh-TW','zh-Hans','ko']:
+                return 'zh'
         return 'en'
         # return detect(text)
     except Exception:

@@ -22,5 +22,7 @@ namespace Trans.Client.Models
         public string TencentTranslateKEY { get; set; }
         public string GoogleTranslateKEY { get; set; }
         public string MicrosoftTranslateKEY { get; set; }
+        public string CustomUri { get; set; }
+        public string CustomKey { get; set; }
     }
 }
