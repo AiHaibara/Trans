@@ -24,9 +24,9 @@ namespace Trans.Client.Windows
         {
             var transform = PresentationSource.FromVisual(window).CompositionTarget.TransformFromDevice;
             var mouse = transform.Transform(new Point(PT.X, PT.Y));
-            window.Left = mouse.X - width - 20;
+            window.Left = mouse.X - width - 15;
             window.Top = mouse.Y - 20;
-            window.Width = width;
+            window.InvalidateVisual();
         }
         public static PopupWindow Popup { get; set; }
         public static Point PT { get; set; }
@@ -43,20 +43,28 @@ namespace Trans.Client.Windows
             PT = pt;
             if (Popup != null)
             {
+                Popup.Width = width;
+                Popup.PopupElement.Width = width;
                 Popup.Visibility = Visibility.Visible;
+                (Popup.PopupElement as AppSprite).CloseBtn.Visibility = Visibility.Visible;
                 MoveBottomEdgeOfWindowToMousePosition(Popup,width);
                 return Popup;
             }
             var window = new PopupWindow
             {
                 PopupElement = content as FrameworkElement,
+                ResizeMode = ResizeMode.CanResize,
+                HorizontalAlignment= HorizontalAlignment.Stretch,
             };
             window.Loaded += (s, e) =>
             {
-                if(window.Visibility==Visibility.Visible)
+                window.Width = width;
+                window.PopupElement.Width = width;
+                window.Visibility = Visibility.Visible;
+                (window.PopupElement as AppSprite).CloseBtn.Visibility = Visibility.Visible;
+                if (window.Visibility==Visibility.Visible)
                     MoveBottomEdgeOfWindowToMousePosition(window, width);
             };
-
             window.ShowActivated = false;
             window.Topmost = true;
             window.Show(content as FrameworkElement, false);

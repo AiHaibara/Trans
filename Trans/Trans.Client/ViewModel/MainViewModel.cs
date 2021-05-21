@@ -309,7 +309,7 @@ namespace Trans.Client.ViewModel
                         //    Windows.Sprite.Popup.Hide();
                         //    //Popup.Close();
                         //}
-                        var box = new AppSprite(dest, width);
+                        var box = new AppSprite(dest);
                         Windows.Sprite.Popup = Windows.Sprite.Show(box, pt, width);
 
                         var handle = new WindowInteropHelper(Windows.Sprite.Popup).Handle;

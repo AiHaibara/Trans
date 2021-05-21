@@ -3,10 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              DataContext="{Binding Box,Source={StaticResource Locator}}" hc:WindowAttach.IsDragElement="True"
-                Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
-    <Border CornerRadius="4" Background="#424242" Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
-        <TextBlock TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" Text="{Binding Box.Dest,Mode=TwoWay,Source={StaticResource Locator}}" Margin="10 10 10 10"></TextBlock>
-    </Border>
-    <Button Click="Button_Click" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Visibility="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=hc:SimplePanel},Converter={StaticResource Boolean2VisibilityConverter}}" Width="22" Height="22" Style="{StaticResource ButtonIcon}" Foreground="White" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-8,-8,0">
+                HorizontalAlignment="Stretch"
+               >
+    <Grid HorizontalAlignment="Stretch">
+        <Border CornerRadius="4" Background="#424242" HorizontalAlignment="Stretch">
+            <TextBlock TextWrapping="Wrap" Foreground="White" VerticalAlignment="Center" Text="{Binding Box.Dest,Mode=TwoWay,Source={StaticResource Locator}}" Margin="10 10 10 10"></TextBlock>
+        </Border>
+    </Grid>
+    <Button Click="Button_Click" x:Name="CloseBtn" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Visibility="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=hc:SimplePanel},Converter={StaticResource Boolean2VisibilityConverter}}" Width="22" Height="22" Style="{StaticResource ButtonIcon}" Foreground="White" hc:IconElement.Geometry="{StaticResource ErrorGeometry}" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-8,-8,0">
     </Button>
 </hc:SimplePanel>

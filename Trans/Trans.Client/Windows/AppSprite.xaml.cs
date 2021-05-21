@@ -5,11 +5,10 @@ namespace Trans.Client.Windows
 {
     public partial class AppSprite
     {
-        public AppSprite(string dest,double width)
+        public AppSprite(string dest)
         {
             InitializeComponent();
             (DataContext as AppSpriteViewModel).Dest = dest;
-            Width = width+10;
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
