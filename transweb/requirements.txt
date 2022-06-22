@@ -30,7 +30,7 @@ langdetect==1.0.9
 livereload==2.6.3
 MarkupSafe==2.0.1
 nltk==3.6.6
-numpy==1.21.0
+numpy==1.22.0
 opencv-python==4.5.2.52
 packaging==20.9
 paramiko==2.7.2
